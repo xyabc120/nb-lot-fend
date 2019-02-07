@@ -1,15 +1,12 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+// 入口
+const MAIN = resolve => require(["@/pages/index.vue"], resolve);
 
-Vue.use(Router)
-
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
-  ]
-})
+export default [
+  { path: "/", redirect: "/app" },
+  {
+    path: "/app",
+    name: "app",
+    component: MAIN,
+    children: []
+  }
+];
