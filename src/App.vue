@@ -10,9 +10,11 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
-    margin: 0;
-    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #F5F5F5;
 }
+@import "./style/style";
 </style>
