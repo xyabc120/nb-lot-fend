@@ -7,46 +7,57 @@ $static:"/static";
 @import "base/reset";
 @import "base/iconfonts";
 
+// common
+@import "common/index.scss";
 
 
-.header{
-    font-size: 20px
+.header {
+  font-size: 20px
 }
-.tips{
-    font-size: 12px
+
+.tips {
+  font-size: 12px
 }
-.inputSel{
-    display: inline-block;
-    width: 300px
+
+.inputSel {
+  display: inline-block;
+  width: 300px
 }
-.tips{
-    font-size: 12px;
-    color: rgb(175, 175, 175)
+
+.tips {
+  font-size: 12px;
+  color: rgb(175, 175, 175)
 }
-.center-row{
-    display: flex;
-    align-items: center;
+
+.center-row {
+  display: flex;
+  align-items: center;
 }
-body{
-    overflow: hidden;
+
+body {
+  overflow: hidden;
 }
-.fl{
-    float: left;
+
+.fl {
+  float: left;
 }
-.fr{
-    float: right;
+
+.fr {
+  float: right;
 }
-.flex-center{
-    display: flex;
-    align-items: center;
+
+.flex-center {
+  display: flex;
+  align-items: center;
 }
-.mask{
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: #5757571f;
-    z-index: 999;
-    box-shadow: 0px 0px 4px 2px #57575738;
+
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #5757571f;
+  z-index: 999;
+  box-shadow: 0px 0px 4px 2px #57575738;
 }

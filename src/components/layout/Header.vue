@@ -3,7 +3,7 @@
     <div class="header-left">
       <div class="logo">
         <img src="../../assets/imgs/logo.png" alt="智能设备管理平台">
-        <span>智能设备管理平台</span>
+        <span>智能终端管理平台</span>
       </div>
     </div>
     <div class="header-navbar">
@@ -13,7 +13,12 @@
         active-text-color="#43D3B1"
         mode="horizontal"
       >
-        <el-menu-item v-for="(nav,index) in navbar" :index="`${index+1}`" :key="index">{{nav.name}}</el-menu-item>
+        <el-menu-item
+          v-for="(nav,index) in navbar"
+          :index="`${index+1}`"
+          :key="index"
+          :route="nav.router"
+        >{{nav.name}}</el-menu-item>
       </el-menu>
     </div>
   </el-header>
@@ -32,7 +37,7 @@ export default {
         },
         {
           name: "智能井盖",
-          router: ""
+          router: "/app/wellCover/dashboard"
         },
         {
           name: "烟感设备",
