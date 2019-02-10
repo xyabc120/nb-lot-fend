@@ -7,6 +7,16 @@
 export default {
   data() {
     return {};
+  },
+  mounted() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      this.$fetch.get("api/asts/getData").then(res => {
+        console.log(res);
+      });
+    }
   }
 };
 </script>

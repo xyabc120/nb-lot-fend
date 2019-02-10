@@ -7,6 +7,14 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 // 引入路由配置
 import routers from "./router/index";
+// 引入store
+import store from './vuex/store'
+// 引入axios，并加到原型链中
+import axios from './https';
+import QS from 'qs';
+
+Vue.prototype.$fetch = axios;
+Vue.prototype.qs = QS;
 
 Vue.config.productionTip = false;
 
@@ -21,6 +29,9 @@ const router = new VueRouter({
 new Vue({
   el: "#app",
   router,
-  components: { App },
+  store, // 全局注入
+  components: {
+    App
+  },
   template: "<App/>"
 });
