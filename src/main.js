@@ -9,12 +9,10 @@ import "element-ui/lib/theme-chalk/index.css";
 import routers from "./router/index";
 // 引入store
 import store from './vuex/store'
-// 引入axios，并加到原型链中
-import axios from './https';
-import QS from 'qs';
+// 异步请求
+import HttpAgent from '@/api/index.js'
 
-Vue.prototype.$fetch = axios;
-Vue.prototype.qs = QS;
+Vue.prototype.$fetch = HttpAgent
 
 Vue.config.productionTip = false;
 

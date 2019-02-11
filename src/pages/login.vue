@@ -2,7 +2,7 @@
   <div class="user-login">
     <div class="formContainer">
       <h4 class="formTitle">登 录</h4>
-      <el-form :model="loginForm" @submit.native.prevent="submitForm" class="formItems">
+      <el-form :model="loginForm" class="formItems">
         <el-form-item class="next-row formItem">
           <span class="next-col formItemCol">
             <el-input
@@ -24,7 +24,6 @@
               v-model="loginForm.password"
               placeholder="密码"
               data-vv-as="密码"
-              @keyup.enter.native="submitForm"
             ></el-input>
           </span>
         </el-form-item>
@@ -59,19 +58,18 @@ export default {
   },
   methods: {
     submitForm() {
-      let api = "/ammeter/login/login";
+      let api = "/login/login";
       let params = {
         username: this.loginForm.username,
         password: this.loginForm.password
       };
-      this.$fetch
-        .post(api, params)
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.$fetch.post(api, params).then(res => {
+        if (res.code === 10000) {
+          this.$router.push("app");
+        } else {
+          this.$message.error(res.message);
+        }
+      });
     }
   },
   beforeDestroy() {
