@@ -1,6 +1,10 @@
 // 入口
 const MAIN = resolve => require(["@/pages/index.vue"], resolve);
 
+// login 登录
+
+const LOGIN = resolve => require(["@/pages/login.vue"], resolve);
+
 // 智能井盖 入口
 const WELL_COVER = resolve => require(["../pages/wellCover/index.vue"], resolve);
 // 设备概览
@@ -16,7 +20,12 @@ const WELL_COVER_MAP_VIEW = resolve => require(["../pages/wellCover/mapview/inde
 
 export default [{
     path: "/",
-    redirect: "/app"
+    redirect: "/login"
+  },
+  {
+    path: '/login',
+    name: "login",
+    component: LOGIN,
   },
   {
     path: "/app",

@@ -3,7 +3,10 @@ import qs from 'qs'
 
 axios.defaults.timeout = 5000; //响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'; //配置请求头
-axios.defaults.baseURL = ''; //配置接口地址
+var lesseeId = window.sessionStorage.getItem('kcpLesseeId');
+!!lesseeId && (axios.defaults.headers.common['X-USER-TOKEN-ID'] = lesseeId.toString()); //配置请求头
+// axios.defaults.headers.common['DOMAIN'] = 'http://nbiot.legendfly.site:8088/ammeter'; //配置请求头
+axios.defaults.baseURL = 'http://nbiot.legendfly.site:8088'; //配置接口地址
 
 //POST传参序列化(添加请求拦截器)
 axios.interceptors.request.use((config) => {
