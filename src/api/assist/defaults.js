@@ -1,7 +1,6 @@
 // import utils from './utils.js' // 引用工具函数
 
 var baseURL = "/ammeter"; // 配置默认请求前缀
-var lesseeId = window.sessionStorage.getItem("kcpLesseeId");
 
 export default {
   // 设置axios的参数
@@ -32,7 +31,7 @@ export default {
   // maxRedirects: 5, // `maxRedirects` 定义在 node.js 中 follow 的最大重定向数目，如果设置为0，将不会 follow 任何重定向，默认：5
   headers: {
     DOMAIN: "http://nbiot.legendfly.site:8088/ammeter",
-    "X-USER-TOKEN-ID": lesseeId
+    "X-USER-TOKEN-ID": window.sessionStorage.getItem("kcpLesseeId")
   },
   withCredentials: true, // `withCredentials` 表示跨域请求时是否需要使用凭证，默认的：false
   responseType: "json" // `responseType` 表示服务器响应的数据类型，可以是 'arraybuffer', 'blob', 'document', 'json', 'text', 'stream'，默认的json

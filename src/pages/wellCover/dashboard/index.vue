@@ -13,7 +13,9 @@ export default {
   },
   methods: {
     getData() {
-      this.$fetch.get("api/asts/getData").then(res => {
+      let api = "/position/gisList";
+      let params = {};
+      this.$fetch.post(api).then(res => {
         console.log(res);
       });
     }

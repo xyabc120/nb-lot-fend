@@ -35,7 +35,13 @@
         </el-form-item>
 
         <div class="next-row formItem">
-          <el-button type="primary" :loading="isloading" @click="submitForm" class="submitBtn">登录</el-button>
+          <el-button
+            type="primary"
+            v-loading.fullscreen.lock="fullscreenLoading"
+            :loading="fullscreenLoading"
+            @click="submitForm"
+            class="submitBtn"
+          >登录</el-button>
         </div>
       </el-form>
     </div>
@@ -48,28 +54,42 @@ export default {
   data() {
     return {
       loadingInstance: null,
-      isloading: false,
+      fullscreenLoading: false,
       loginForm: {
-        username: "",
-        password: "",
+        username: "zhuojun",
+        password: "888888",
         remember: false
       }
     };
   },
   methods: {
     submitForm() {
+      this.fullscreenLoading = true;
       let api = "/login/login";
       let params = {
         username: this.loginForm.username,
         password: this.loginForm.password
       };
-      this.$fetch.post(api, params).then(res => {
-        if (res.code === 10000) {
-          this.$router.push("app");
-        } else {
-          this.$message.error(res.message);
-        }
-      });
+      this.$fetch
+        .post(api, params)
+        .then(res => {
+          if (res.code === 10000) {
+            this.$fetch.config.headers["X-USER-TOKEN-ID"] = res.data.authToken;
+            window.sessionStorage.setItem(
+              "kcpLesseeId",
+              res.data && res.data.authToken
+            );
+            this.fullscreenLoading = false;
+            this.$router.push("app");
+          } else {
+            this.fullscreenLoading = false;
+            this.$message.error(res.message);
+          }
+        })
+        .catch(err => {
+          this.$message.error(err.message);
+          this.fullscreenLoading = false;
+        });
     }
   },
   beforeDestroy() {
