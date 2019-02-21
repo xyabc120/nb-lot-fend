@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="page-title">设备概览</div>
+    <div>
+      
+    </div>
   </div>
 </template>
 <script>

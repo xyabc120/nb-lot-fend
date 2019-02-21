@@ -11,6 +11,8 @@ import routers from "./router/index";
 import store from './vuex/store'
 // 异步请求
 import HttpAgent from '@/api/index.js'
+// 高德地图
+import VueAMap from 'vue-amap';
 
 Vue.prototype.$fetch = HttpAgent
 
@@ -18,6 +20,14 @@ Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
 Vue.use(ElementUI);
+Vue.use(VueAMap);
+
+VueAMap.initAMapApiLoader({
+  key: '7af099c49bc59b423c4998a8bc01706b',
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  // 默认高德 sdk 版本为 1.4.4
+  v: '1.4.4'
+});
 
 const router = new VueRouter({
   routes: routers
