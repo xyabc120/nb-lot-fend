@@ -81,7 +81,8 @@ export default {
   .content {
     height: 100%;
     margin-left: 215px;
-    padding: 10px;
+    padding: 20px;
+    background: #f5f5f5;
   }
 }
 </style>

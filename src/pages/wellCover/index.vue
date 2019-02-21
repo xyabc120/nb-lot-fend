@@ -9,6 +9,5 @@
   background-color: #ffffff;
   height: 100%;
   border-radius: 5px;
-  padding: 15px;
 }
 </style>
