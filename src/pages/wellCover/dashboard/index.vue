@@ -2,7 +2,7 @@
   <div class="dashboard-wrap">
     <div class="dashboard-header">
       <div class="leftside">
-        <div class="count-number"></div>
+        <div class="count-number"><i class="el-icon-iot-Numberlist"></i></div>
         <div class="count-number"></div>
         <div class="count-report"></div>
       </div>
