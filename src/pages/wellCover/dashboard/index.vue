@@ -2,8 +2,20 @@
   <div class="dashboard-wrap">
     <div class="dashboard-header">
       <div class="leftside">
-        <div class="count-number"><i class="el-icon-iot-Numberlist"></i></div>
-        <div class="count-number"></div>
+        <div class="count-number">
+          <div class="el-icon-iot-zhushujuguanli icon-style color-43D3B1"></div>
+          <div>
+            <p>智能井盖总量</p>
+            <span>1,026</span>
+          </div>
+        </div>
+        <div class="count-number">
+          <div class="el-icon-iot-xiaoxi icon-style color-ffbb6d"></div>
+          <div>
+            <p>今日告警次数</p>
+            <span>39</span>
+          </div>
+        </div>
         <div class="count-report"></div>
       </div>
       <div class="rightside"></div>
@@ -33,6 +45,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.color-43D3B1 {
+  color: #43d3b1;
+}
+.color-ffbb6d {
+  color: #ffbb6d;
+}
 .dashboard-wrap {
   background-color: #f5f5f5;
 
@@ -50,6 +68,12 @@ export default {
         background: #fff;
         border-radius: 2px;
         margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        vertical-align: middle;
+        .icon-style {
+          font-size: 64px;
+        }
       }
 
       .count-report {
