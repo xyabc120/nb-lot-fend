@@ -4,16 +4,16 @@
       <div class="leftside">
         <div class="count-number">
           <div class="el-icon-iot-zhushujuguanli icon-style color-43D3B1"></div>
-          <div>
+          <div class="data-right">
             <p>智能井盖总量</p>
-            <span>1,026</span>
+            <span>{{deviceNumber}}</span>
           </div>
         </div>
         <div class="count-number">
           <div class="el-icon-iot-xiaoxi icon-style color-ffbb6d"></div>
-          <div>
+          <div class="data-right">
             <p>今日告警次数</p>
-            <span>39</span>
+            <span>{{woring}}</span>
           </div>
         </div>
         <div class="count-report"></div>
@@ -27,18 +27,25 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      deviceNumber: 0,
+      woring: 0
+    };
   },
   mounted() {
     this.getData();
   },
   methods: {
     getData() {
-      let api = "/position/gisList";
-      let params = {};
-      this.$fetch.post(api).then(res => {
-        console.log(res);
-      });
+      setInterval(() => {
+        this.deviceNumber = this.deviceNumber + 51;
+        this.woring = this.woring + 1;
+        if (this.deviceNumber > 1024) {
+          this.deviceNumber = 1024;
+          this.woring = 36;
+          clearInterval();
+        }
+      }, 30);
     }
   }
 };
@@ -64,7 +71,7 @@ export default {
 
       .count-number {
         width: 100%;
-        height: 150px;
+        height: 100px;
         background: #fff;
         border-radius: 2px;
         margin-bottom: 20px;
@@ -73,12 +80,30 @@ export default {
         vertical-align: middle;
         .icon-style {
           font-size: 64px;
+          position: relative;
+          top: 50%;
+          left: 20px;
+          margin-top: -32px;
+        }
+        .data-right {
+          text-align: right;
+          letter-spacing: 0;
+          p {
+            padding: 20px;
+            font-size: 14px;
+            color: #929eaa;
+          }
+          span {
+            padding: 0 20px 20px 0;
+            font-size: 32px;
+            color: #576573;
+          }
         }
       }
 
       .count-report {
         width: 100%;
-        height: 300px;
+        height: 200px;
         background: #fff;
         border-radius: 2px;
       }
@@ -87,7 +112,7 @@ export default {
     .rightside {
       flex-grow: 2;
       background: #fff;
-      height: 640px;
+      height: 440px;
     }
   }
   .dashboard-footer {
