@@ -16,7 +16,11 @@
             <span>{{woring}}</span>
           </div>
         </div>
-        <div class="count-report"></div>
+        <div class="count-report">
+          <div class="doughnut-wrapper">
+            <doughnut-chart chartId="c02" title="智能井盖状态" :dataSet="secondList"></doughnut-chart>
+          </div>
+        </div>
       </div>
       <div class="rightside"></div>
     </div>
@@ -25,11 +29,29 @@
 </template>
 
 <script>
+import doughnutChart from "../../../components/charts/doughnutChart";
 export default {
+  components: {
+    doughnutChart
+  },
   data() {
     return {
       deviceNumber: 0,
-      woring: 0
+      woring: 0,
+      secondList: [
+        {
+          value: 20,
+          name: "正常"
+        },
+        {
+          value: 32,
+          name: "低电量"
+        },
+        {
+          value: 48,
+          name: "离线"
+        }
+      ]
     };
   },
   mounted() {
@@ -106,6 +128,10 @@ export default {
         height: 200px;
         background: #fff;
         border-radius: 2px;
+        .doughnut-wrapper {
+          height: 100%;
+          width: 100%;
+        }
       }
     }
 
