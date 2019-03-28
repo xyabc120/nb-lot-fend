@@ -2,7 +2,7 @@
 const MAIN = resolve => require(["@/pages/index.vue"], resolve);
 
 // login 登录
-
+const LOGIN_LAYOUT = resolve => require(["@/components/LoginLayout.vue"], resolve);
 const LOGIN = resolve => require(["@/pages/login.vue"], resolve);
 
 // 智能井盖 入口
@@ -23,9 +23,13 @@ export default [{
     redirect: "/login"
   },
   {
-    path: '/login',
-    name: "login",
-    component: LOGIN,
+    path: '',
+    component: LOGIN_LAYOUT,
+    children: [{
+      path: '/login',
+      name: "login",
+      component: LOGIN,
+    }, ]
   },
   {
     path: "/app",

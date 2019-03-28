@@ -56,8 +56,8 @@ export default {
       loadingInstance: null,
       fullscreenLoading: false,
       loginForm: {
-        username: "zhuojun",
-        password: "888888",
+        username: "",
+        password: "",
         remember: false
       }
     };

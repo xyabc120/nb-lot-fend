@@ -4925,6 +4925,10 @@ resize-detector@^0.1.9:
   version "0.1.10"
   resolved "http://registry.npm.taobao.org/resize-detector/download/resize-detector-0.1.10.tgz#1da3f961aa5f914ccbcfd3752d52fd45beeb692c"
 
+resize-detector@^0.2.0:
+  version "0.2.0"
+  resolved "http://registry.npm.taobao.org/resize-detector/download/resize-detector-0.2.0.tgz#c4e7cd1426cfc173fba3986c985743c9b2b1f000"
+
 resize-observer-polyfill@^1.5.0:
   version "1.5.1"
   resolved "http://registry.npm.taobao.org/resize-observer-polyfill/download/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
