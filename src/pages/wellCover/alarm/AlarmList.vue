@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <div class="page-title">告警列表</div>
+  <div class="page">
+    <div class="page-title">设备告警</div>
+    <div class="page-content"></div>
   </div>
 </template>
 <script>

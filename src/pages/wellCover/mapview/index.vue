@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <div class="amap-wrapper">
+  <div class="page">
+    <div class="page-title">设备分部</div>
+    <div class="page-content">
       <el-amap class="amap-box" :vid="'amap-vue'">
         <el-amap-marker
           v-for="(marker, index) in markers"
@@ -43,8 +44,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.amap-wrapper {
-  width: 100%;
-  height: 100%;
-}
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <!-- 左边菜单 -->
     <div class="menu">
       <el-menu
         default-active="0"
@@ -20,6 +21,7 @@
         </el-menu-item>
       </el-menu>
     </div>
+    <!-- 右边页面 -->
     <router-view class="content"></router-view>
   </div>
 </template>
@@ -36,8 +38,8 @@ export default {
           router: "dashboard"
         },
         {
-          icon: "el-icon-tickets",
-          menuName: "设备详情",
+          icon: "el-icon-mobile-phone",
+          menuName: "设备管理",
           router: "deviceinfo"
         },
         {
@@ -46,14 +48,24 @@ export default {
           router: "alarmList"
         },
         {
-          icon: "el-icon-setting",
-          menuName: "设备维护",
-          router: "devicemaintain"
-        },
-        {
           icon: "el-icon-location-outline",
           menuName: "设备分部",
           router: "mapview"
+        },
+        {
+          icon: "el-icon-tickets",
+          menuName: "工单管理",
+          router: "workorder"
+        },
+        {
+          icon: "el-icon-setting",
+          menuName: "系统设置",
+          router: "systemconfig"
+        },
+        {
+          icon: "el-icon-edit-outline",
+          menuName: "用户管理",
+          router: "usermanage"
         }
       ]
     };
@@ -63,12 +75,11 @@ export default {
 
 <style lang="scss">
 .main {
-  // border: 1px solid red;
   height: 100%;
-
   .menu {
     width: 215px;
     height: 100%;
+    height: calc(100% - 60px);
     position: absolute;
     left: 0;
     background-color: #2d3e50;
@@ -78,10 +89,11 @@ export default {
       border: 1px;
     }
   }
+
   .content {
-    height: 100%;
     margin-left: 215px;
-    padding: 20px;
+    height: calc(100% - 110px);
+    padding: 10px;
     background: #f5f5f5;
   }
 }

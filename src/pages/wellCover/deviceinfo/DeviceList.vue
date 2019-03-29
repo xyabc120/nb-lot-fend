@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <div class="page-title">设备详情</div>
+  <div class="page">
+    <div class="page-title">设备管理</div>
+    <div class="page-content"></div>
   </div>
 </template>
 <script>
