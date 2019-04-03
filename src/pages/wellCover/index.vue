@@ -6,8 +6,8 @@
 
 <style lang="scss" scoped>
 .wellcover-content {
-  background-color: #ffffff;
-  height: 100%;
-  border-radius: 5px;
+  // background-color: #ffffff;
+  // height: 100%;
+  // border-radius: 5px;
 }
 </style>

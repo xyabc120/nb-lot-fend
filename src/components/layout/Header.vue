@@ -6,20 +6,34 @@
         <span>智能终端管理平台</span>
       </div>
     </div>
-    <div class="header-navbar">
-      <el-menu
-        :default-active="activeIndex"
-        text-color="#576573"
-        active-text-color="#43D3B1"
-        mode="horizontal"
-      >
-        <el-menu-item
-          v-for="(nav,index) in navbar"
-          :index="`${index+1}`"
-          :key="index"
-          :route="nav.router"
-        >{{nav.name}}</el-menu-item>
-      </el-menu>
+
+    <div class="header-right">
+      <div class="header-navbar">
+        <el-menu
+          :default-active="activeIndex"
+          text-color="#576573"
+          active-text-color="#43D3B1"
+          mode="horizontal"
+        >
+          <el-menu-item
+            v-for="(nav,index) in navbar"
+            :index="`${index+1}`"
+            :key="index"
+            :route="nav.router"
+          >{{nav.name}}</el-menu-item>
+        </el-menu>
+      </div>
+
+      <el-dropdown @command="handleCommand">
+        <span class="current-user el-dropdown-link">
+          管理员
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item icon="el-icon-edit">修改信息</el-dropdown-item>
+          <el-dropdown-item command="signout" icon="el-icon-circle-close-outline">退出系统</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </el-header>
 </template>
@@ -49,6 +63,14 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    handleCommand(command) {
+      if (command === "signout") {
+        console.log("signout……！");
+        this.$router.replace({ path: "/login" });
+      }
+    }
   }
 };
 </script>
@@ -90,6 +112,22 @@ export default {
         line-height: 25px;
         margin-left: 8px;
       }
+    }
+  }
+
+  .header-right {
+    width: calc(100% - 255px);
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+
+    .right-btn {
+      background: #f5f5f5;
+      width: 120px;
+      height: 40px;
+      line-height: 40px;
+      margin-top: 10px;
+      float: right;
     }
   }
 }

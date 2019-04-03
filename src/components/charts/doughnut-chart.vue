@@ -3,8 +3,8 @@
 </template>
 <script>
 export default {
-  name: "doughnutChart",
-  props: ["chartId", "title", "dataSet"],
+  name: "DoughnutChart",
+  props: ["title", "dataSet"],
   data() {
     return {
       option: {
@@ -39,8 +39,7 @@ export default {
         ]
       }
     };
-  },
-  mounted() {}
+  }
 };
 </script>
 <style lang="scss" scoped>
