@@ -17,5 +17,4 @@ export default {
   background: #f5f5f5;
 }
 @import "./style/style";
-// @import "../theme/index.css";
 </style>

@@ -40,7 +40,7 @@ export default {
         {
           icon: "el-icon-mobile-phone",
           menuName: "设备管理",
-          router: "deviceinfo"
+          router: "devicelist"
         },
         {
           icon: "el-icon-bell",

@@ -21,3 +21,26 @@
     height: 100%;
   }
 }
+
+.pageinfo {
+  height: 100%;
+  border-radius: 4px;
+
+  .pageinfo-header {
+    background: #fff;
+    border-radius: 4px;
+    padding: 15px 15px 0 15px;
+
+    .pageinfo-title {
+      font-size: 18px;
+      font-weight: 400;
+      font-family: Extra large;
+      line-height: 40px;
+      color: #2d3e50;
+      border-bottom: 1px solid #DCDFE6;
+      margin-bottom: 20px;
+    }
+  }
+
+
+}

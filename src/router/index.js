@@ -9,8 +9,10 @@ const LOGIN = resolve => require(["@/pages/login.vue"], resolve);
 const WELL_COVER = resolve => require(["@/pages/wellCover/index.vue"], resolve);
 // 设备概览
 const WELL_COVER_DASHBOARD = resolve => require(["@/pages/wellCover/dashboard/index.vue"], resolve);
+// 设备管理
+const WELL_COVER_DEVICE_LIST = resolve => require(["@/pages/wellCover/deviceinfo/DeviceList.vue"], resolve);
 // 设备详情
-const WELL_COVER_DEVICE_INFO = resolve => require(["@/pages/wellCover/deviceinfo/DeviceList.vue"], resolve);
+const WELL_COVER_DEVICE_INFO = resolve => require(["@/pages/wellCover/deviceinfo/DeviceInfo.vue"], resolve);
 // 设备告警
 const WELL_COVER_ALARM_LIST = resolve => require(["@/pages/wellCover/alarm/AlarmList.vue"], resolve);
 // 工单管理
@@ -50,10 +52,15 @@ export default [{
           name: "dashboard",
           component: WELL_COVER_DASHBOARD,
         }, {
-          path: "/app/wellCover/deviceinfo",
+          path: "/app/wellCover/devicelist",
+          name: "devicelist",
+          component: WELL_COVER_DEVICE_LIST,
+        }, {
+          path: "/app/wellCover/deviceinfo/:id",
           name: "deviceinfo",
           component: WELL_COVER_DEVICE_INFO,
-        }, {
+        },
+        {
           path: "/app/wellCover/alarmList",
           name: "alarmList",
           component: WELL_COVER_ALARM_LIST,
