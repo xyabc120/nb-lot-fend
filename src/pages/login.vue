@@ -74,9 +74,9 @@ export default {
         .post(api, params)
         .then(res => {
           if (res.code === 10000) {
-            this.$fetch.config.headers["X-USER-TOKEN-ID"] = res.data.authToken;
+            this.$fetch.config.headers["QT-USER-TOKEN"] = res.data.authToken;
             window.sessionStorage.setItem(
-              "kcpLesseeId",
+              "QT-USER-TOKEN",
               res.data && res.data.authToken
             );
             this.fullscreenLoading = false;

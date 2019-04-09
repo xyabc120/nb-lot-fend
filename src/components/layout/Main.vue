@@ -35,37 +35,37 @@ export default {
         {
           icon: "el-icon-menu",
           menuName: "设备概览",
-          router: "dashboard"
+          router: "/app/wellCover/dashboard"
         },
         {
           icon: "el-icon-mobile-phone",
           menuName: "设备管理",
-          router: "devicelist"
+          router: "/app/wellCover/devicelist"
         },
         {
           icon: "el-icon-bell",
           menuName: "设备告警",
-          router: "alarmList"
+          router: "/app/wellCover/alarmList"
         },
         {
           icon: "el-icon-location-outline",
           menuName: "设备分部",
-          router: "mapview"
+          router: "/app/wellCover/mapview"
         },
         {
           icon: "el-icon-tickets",
           menuName: "工单管理",
-          router: "workorder"
+          router: "/app/wellCover/workorder"
         },
         {
           icon: "el-icon-setting",
           menuName: "系统设置",
-          router: "systemconfig"
+          router: "/app/wellCover/systemconfig"
         },
         {
           icon: "el-icon-edit-outline",
           menuName: "用户管理",
-          router: "usermanage"
+          router: "/app/wellCover/usermanage"
         }
       ]
     };

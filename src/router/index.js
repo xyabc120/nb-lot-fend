@@ -10,9 +10,9 @@ const WELL_COVER = resolve => require(["@/pages/wellCover/index.vue"], resolve);
 // 设备概览
 const WELL_COVER_DASHBOARD = resolve => require(["@/pages/wellCover/dashboard/index.vue"], resolve);
 // 设备管理
-const WELL_COVER_DEVICE_LIST = resolve => require(["@/pages/wellCover/deviceinfo/DeviceList.vue"], resolve);
+const WELL_COVER_DEVICE_LIST = resolve => require(["@/pages/wellCover/device/DeviceList.vue"], resolve);
 // 设备详情
-const WELL_COVER_DEVICE_INFO = resolve => require(["@/pages/wellCover/deviceinfo/DeviceInfo.vue"], resolve);
+const WELL_COVER_DEVICE_INFO = resolve => require(["@/pages/wellCover/device/DeviceInfo.vue"], resolve);
 // 设备告警
 const WELL_COVER_ALARM_LIST = resolve => require(["@/pages/wellCover/alarm/AlarmList.vue"], resolve);
 // 工单管理
@@ -23,6 +23,8 @@ const WELL_COVER_MAP_VIEW = resolve => require(["@/pages/wellCover/mapview/index
 const WELL_COVER_SYSTEM_CONFIG = resolve => require(["../pages/wellCover/system/index.vue"], resolve);
 // 用户管理
 const WELL_COVER_USER_MANAGE = resolve => require(["../pages/wellCover/user/UserList.vue"], resolve);
+// 用户编辑
+const WELL_COVER_USER_EDIT = resolve => require(["../pages/wellCover/user/UserEdit.vue"], resolve);
 
 
 export default [{
@@ -82,6 +84,11 @@ export default [{
           path: "/app/wellCover/usermanage",
           name: "usermanage",
           component: WELL_COVER_USER_MANAGE,
+        },
+        {
+          path: '/app/wellCover/useredit/:id',
+          name: 'useredit',
+          component: WELL_COVER_USER_EDIT,
         }
       ]
     }]

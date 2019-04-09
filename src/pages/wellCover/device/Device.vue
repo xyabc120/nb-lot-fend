@@ -1,19 +1,10 @@
 <template>
-  <div class="pageinfo">
-    <div class="pageinfo-header">
-      <div class="pageinfo-title">设备信息</div>
-      <el-tabs v-model="active" type="card" @tab-click="handleClick">
-        <el-tab-pane label="设备信息" name="first"></el-tab-pane>
-        <el-tab-pane label="告警信息" name="second"></el-tab-pane>
-        <el-tab-pane label="监控信息" name="third"></el-tab-pane>
-      </el-tabs>
-    </div>
-
+  <div class="device">
     <div class="device-info">
       <el-row :gutter="1">
         <el-col :span="16">
           <div class="card h260">
-            <div class="card-title">{{imei}}</div>
+            <div class="card-title">{{device.deviceInfo.imei}}</div>
             <el-row class="mt20">
               <el-col :span="8">
                 <el-row>
@@ -179,15 +170,29 @@
         <el-col :span="24">
           <div class="card h260">
             <div class="card-title">位置信息</div>
-            <template>
-              <el-amap class="amap-box" :vid="'deviceInfo'" :center="device.deviceInfo.postion">
-                <el-amap-marker
-                  :position="device.deviceInfo.postion"
-                  :icon="icon_jg"
-                  :content="dom_jg"
-                ></el-amap-marker>
-              </el-amap>
-            </template>
+            <el-amap
+              class="amap-box"
+              :vid="'amap'+new Date()"
+              :zoom="18"
+              :center="device.deviceInfo.postion"
+            >
+              <el-amap-marker
+                :position="device.deviceInfo.postion"
+                :content="dom_jg"
+                :animation="'AMAP_ANIMATION_DROP'"
+                :offset="[-16,-14]"
+                :events="{click: () => {
+                  handleMarker();
+                }}"
+              ></el-amap-marker>
+              <el-amap-info-window
+                :position="windowDom.position"
+                :visible="windowDom.visible"
+                :content="windowDom.content"
+                :offset="[0,-5]"
+                @close="closeWindow()"
+              ></el-amap-info-window>
+            </el-amap>
           </div>
         </el-col>
       </el-row>
@@ -196,13 +201,16 @@
 </template>
 <script>
 export default {
+  name: "Device",
   data() {
     return {
-      active: "first",
-      imei: this.$route.params.id,
-      icon_jg: require("../../../assets/imgs/jg.png"),
       dom_jg:
         "<img src='https://www.legendfly.site/image-shiding/pic_03.png' style='width:33px;height:33px;'></img>",
+      windowDom: {
+        position: [121.605699, 31.169571],
+        visible: false,
+        content: "<div class='prompt'>demo</div>"
+      }, // 窗体
       device: {
         deviceInfo: {
           id: "1234567", //	id
@@ -213,7 +221,7 @@ export default {
           platform: "电信物联网平台", //	接入运营商
           createDate: "2019-04-03", //	创建日期
           lastConnetTime: "2019-04-04 21:37:27", //	最后在线时间
-          postion: [121.604, 31.171], //	位置
+          postion: [121.605699, 31.169571], //	位置
           installer: "建华", //	安装人员
           deviceNo: "NO.879HVCT", //	设备型号
           contacts: "蔡老板", //	联系人
@@ -240,7 +248,20 @@ export default {
     };
   },
   methods: {
-    handleClick: function() {}
+    handleMarker() {
+      this.windowDom.position = this.device.deviceInfo.postion;
+      this.windowDom.content = `<strong>IMEI：${
+        this.device.deviceInfo.imei
+      }</strong><br/><hr/><p class="my-desc"><strong>状态：${
+        this.device.deviceInfo.deviceStatus
+      }</strong> <br/> 设备名称：${
+        this.device.deviceInfo.deviceName
+      }<br/> 地址：${this.device.deviceInfo.address}</p>`;
+      this.windowDom.visible = !this.windowDom.visible;
+    },
+    closeWindow() {
+      this.windowDom.visible = !this.windowDom.visible;
+    }
   }
 };
 </script>
@@ -274,4 +295,3 @@ export default {
   }
 }
 </style>
-

@@ -4,9 +4,9 @@
       <div class="header">
         <a href="#" class="meta">
           <img class="logo" :src="img_logo" alt="logo">
-          <span class="title">NB-Iot-ADMIN</span>
+          <span class="title">QT-Iot</span>
         </a>
-        <p class="desc">契通物联管理平台</p>
+        <p class="desc">契通物联智能设备管理平台</p>
       </div>
 
       <router-view></router-view>
