@@ -11,20 +11,22 @@ const WELL_COVER = resolve => require(["@/pages/wellCover/index.vue"], resolve);
 const WELL_COVER_DASHBOARD = resolve => require(["@/pages/wellCover/dashboard/index.vue"], resolve);
 // 设备管理
 const WELL_COVER_DEVICE_LIST = resolve => require(["@/pages/wellCover/device/DeviceList.vue"], resolve);
+// 设备编辑
+const WELL_COVER_DEVICE_EDIT = resolve => require(["@/pages/wellCover/device/DeviceEdit.vue"], resolve);
 // 设备详情
 const WELL_COVER_DEVICE_INFO = resolve => require(["@/pages/wellCover/device/DeviceInfo.vue"], resolve);
 // 设备告警
 const WELL_COVER_ALARM_LIST = resolve => require(["@/pages/wellCover/alarm/AlarmList.vue"], resolve);
 // 工单管理
-const WELL_COVER_WORK_ORDER = resolve => require(["../pages/wellCover/workorder/WorkOrderList.vue"], resolve);
+const WELL_COVER_WORK_ORDER = resolve => require(["@/pages/wellCover/workorder/WorkOrderList.vue"], resolve);
 // 设备分部
 const WELL_COVER_MAP_VIEW = resolve => require(["@/pages/wellCover/mapview/index.vue"], resolve);
 // 系统设置
-const WELL_COVER_SYSTEM_CONFIG = resolve => require(["../pages/wellCover/system/index.vue"], resolve);
+const WELL_COVER_SYSTEM_CONFIG = resolve => require(["@/pages/wellCover/system/index.vue"], resolve);
 // 用户管理
-const WELL_COVER_USER_MANAGE = resolve => require(["../pages/wellCover/user/UserList.vue"], resolve);
+const WELL_COVER_USER_MANAGE = resolve => require(["@/pages/wellCover/user/UserList.vue"], resolve);
 // 用户编辑
-const WELL_COVER_USER_EDIT = resolve => require(["../pages/wellCover/user/UserEdit.vue"], resolve);
+const WELL_COVER_USER_EDIT = resolve => require(["@/pages/wellCover/user/UserEdit.vue"], resolve);
 
 
 export default [{
@@ -58,6 +60,11 @@ export default [{
           name: "devicelist",
           component: WELL_COVER_DEVICE_LIST,
         }, {
+          path: "/app/wellCover/deviceedit/:id",
+          name: "deviceedit",
+          component: WELL_COVER_DEVICE_EDIT,
+        },
+        {
           path: "/app/wellCover/deviceinfo/:id",
           name: "deviceinfo",
           component: WELL_COVER_DEVICE_INFO,

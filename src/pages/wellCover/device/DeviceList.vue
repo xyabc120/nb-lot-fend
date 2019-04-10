@@ -35,10 +35,11 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search">查询</el-button>
-            <el-button icon="el-icon-plus">新增</el-button>
+            <el-button icon="el-icon-plus" @click="addDevice">新增</el-button>
           </el-form-item>
         </el-form>
       </div>
+
       <div class="table">
         <el-table :data="tableData" border style="width: 100%">
           <el-table-column prop="imei" label="设备编号" width="170"></el-table-column>
@@ -80,6 +81,7 @@
           </el-table-column>
         </el-table>
       </div>
+
       <div class="pagination">
         <el-pagination
           @size-change="handleSizeChange"
@@ -210,6 +212,22 @@ export default {
     findDetail: function(i, obj) {
       this.$router.push({
         name: "deviceinfo",
+        params: {
+          id: obj.imei
+        }
+      });
+    },
+    addDevice() {
+      this.$router.push({
+        name: "deviceedit",
+        params: {
+          id: 0
+        }
+      });
+    },
+    handleEdit(i, obj) {
+      this.$router.push({
+        name: "deviceedit",
         params: {
           id: obj.imei
         }
