@@ -8,8 +8,8 @@
             <el-row class="mt20">
               <el-col :span="8">
                 <el-row>
-                  <el-col :span="6" class="lable">设备ID:</el-col>
-                  <el-col :span="18" class="value">{{device.deviceInfo.id}}</el-col>
+                  <el-col :span="6" class="lable">设备(imei):</el-col>
+                  <el-col :span="18" class="value">{{device.deviceInfo.imei}}</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
@@ -41,7 +41,10 @@
               <el-col :span="8">
                 <el-row>
                   <el-col :span="6" class="lable">合同状态:</el-col>
-                  <el-col :span="18" class="value">{{device.deviceInfo.contractStatus}}</el-col>
+                  <el-col
+                    :span="18"
+                    class="value"
+                  >{{device.deviceInfo.contractStatus | toContractStatus}}</el-col>
                 </el-row>
               </el-col>
             </el-row>
@@ -49,32 +52,32 @@
               <el-col :span="8">
                 <el-row>
                   <el-col :span="6" class="lable">创建时间:</el-col>
-                  <el-col :span="18" class="value">{{device.deviceInfo.createDate}}</el-col>
+                  <el-col :span="18" class="value">{{device.deviceInfo.createTime}}</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
                 <el-row>
                   <el-col :span="6" class="lable">接入运营商:</el-col>
-                  <el-col :span="18" class="value">{{device.deviceInfo.platform}}</el-col>
+                  <el-col :span="18" class="value">{{device.deviceInfo.platform | formatPlatform}}</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
                 <el-row>
                   <el-col :span="6" class="lable">归属运营商:</el-col>
-                  <el-col :span="18" class="value">{{device.sim.belongPlatform}}</el-col>
+                  <el-col :span="18" class="value">{{device.sim.belongPlatform | formatPlatform}}</el-col>
                 </el-row>
               </el-col>
             </el-row>
             <el-row class="mt20">
               <el-col :span="8">
                 <el-row>
-                  <el-col :span="6" class="lable">激活时间:</el-col>
+                  <el-col :span="6" class="lable">激活日期:</el-col>
                   <el-col :span="18" class="value">{{device.sim.activeDate}}</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
                 <el-row>
-                  <el-col :span="6" class="lable">有效期:</el-col>
+                  <el-col :span="6" class="lable">有效期至:</el-col>
                   <el-col :span="18" class="value">{{device.sim.endDate}}</el-col>
                 </el-row>
               </el-col>
@@ -99,9 +102,9 @@
               <el-col :span="6" class="lable" style="line-height:32px;">设备状态:</el-col>
               <el-col :span="18" class="value">
                 <el-tag
-                  :type="device.deviceInfo.deviceStatus === '在线' ? 'primary' : 'warning'"
+                  :type="device.deviceInfo.deviceStatus ? 'primary' : 'warning'"
                   disable-transitions
-                >{{device.deviceInfo.deviceStatus}}</el-tag>
+                >{{device.deviceInfo.deviceStatus | toDeviceStatus}}</el-tag>
               </el-col>
             </el-row>
             <el-row class="mt20">
@@ -125,7 +128,10 @@
               <el-col :span="8">
                 <el-row>
                   <el-col :span="6" class="lable">告警状态:</el-col>
-                  <el-col :span="18" class="value">{{device.deviceProps.warningStatus}}</el-col>
+                  <el-col
+                    :span="18"
+                    class="value"
+                  >{{device.deviceProps.warningStatus | wallCover_toWaringStarus}}</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
@@ -211,10 +217,11 @@ export default {
         visible: false,
         content: "<div class='prompt'>demo</div>"
       }, // 窗体
+
       device: {
         deviceInfo: {
-          id: "1234567", //	id
-          imei: this.$route.params.id, //	设备编号
+          id: null, //	id
+          imei: "1234567654321", //	设备编号
           deviceName: "测试井盖", //	设备名称
           address: "上海市浦东新区张江科技园", //	地址
           deviceStatus: "在线", //	设备状态
@@ -247,16 +254,56 @@ export default {
       }
     };
   },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  mounted() {
+    this.getDeviceById(this.id);
+  },
   methods: {
+    toWaringStarus(code) {
+      switch (code) {
+        case 0:
+          return "正常";
+        case 2:
+          return "信号弱";
+        case 3:
+          return "倾斜大";
+        case 4:
+          return "水位高";
+        case 5:
+          return "亮度高";
+        case 6:
+          return "电量低";
+        default:
+          return "";
+      }
+    },
+    getDeviceById(id) {
+      let api = `/wellCoverDevice/getDeviceById/${id}`;
+      this.$fetch.post(api).then(res => {
+        if (res.code === 10000) {
+          this.device = { ...res.data };
+          this.device.deviceInfo.postion = [
+            this.device.deviceInfo.amapLongitude,
+            this.device.deviceInfo.amapLatitude
+          ];
+          console.log(this.device);
+        }
+      });
+    },
     handleMarker() {
       this.windowDom.position = this.device.deviceInfo.postion;
       this.windowDom.content = `<strong>IMEI：${
         this.device.deviceInfo.imei
-      }</strong><br/><hr/><p class="my-desc"><strong>状态：${
+      }</strong><br/><hr/><p class="my-desc"><strong>状态：${this.toWaringStarus(
         this.device.deviceInfo.deviceStatus
-      }</strong> <br/> 设备名称：${
+      )}</strong> <br/> <strong>设备名称：</strong>${
         this.device.deviceInfo.deviceName
-      }<br/> 地址：${this.device.deviceInfo.address}</p>`;
+      }<br/> <strong>地址：</strong>${this.device.deviceInfo.address}</p>`;
       this.windowDom.visible = !this.windowDom.visible;
     },
     closeWindow() {

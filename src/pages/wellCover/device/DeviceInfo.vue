@@ -9,9 +9,9 @@
       </el-tabs>
     </div>
     <div class="pageinfo-content">
-      <device v-if="active === 'first'"></device>
-      <history-warning v-else-if="active === 'second'"></history-warning>
-      <history-monitor v-else-if="active === 'third'"></history-monitor>
+      <device :id="this.id" v-if="active === 'first'"></device>
+      <history-warning :id="this.id" v-else-if="active === 'second'"></history-warning>
+      <history-monitor :id="this.id" v-else-if="active === 'third'"></history-monitor>
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       active: "first",
-      imei: this.$route.params.id
+      id: this.$route.params.id
     };
   },
   methods: {

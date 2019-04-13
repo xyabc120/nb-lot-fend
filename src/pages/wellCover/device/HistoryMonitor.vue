@@ -1,43 +1,53 @@
 <template>
   <div class="monitor">
     <div class="filter mb20">
-      <span>告警设备：{{imei}}</span>
-      <div class>
+      <span>
+        <!-- 告警设备：{{imei}} -->
+      </span>
+      <div>
         <label>时间范围</label>
-        <el-select v-model="timeFrame" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+        <el-date-picker
+          v-model="filter.createDate"
+          type="daterange"
+          align="right"
+          unlink-panels
+          value-format="yyyy-MM-dd"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          @change="query()"
+        ></el-date-picker>
       </div>
     </div>
     <div class="table">
       <el-table
+        v-if="!!monitorList"
         :data="monitorList"
         style="width: 100%"
         :header-cell-style="{background:'#eef1f6',color:'#606266'}"
       >
+        <el-table-column prop="imei" label="imei" width="180"></el-table-column>
         <el-table-column prop="createDate" label="时间" width="180"></el-table-column>
         <el-table-column prop="battery" label="电量"></el-table-column>
         <el-table-column prop="waterLevel" label="水位"></el-table-column>
         <el-table-column prop="brightness" label="亮度"></el-table-column>
         <el-table-column prop="isTilt" label="是否倾斜"></el-table-column>
         <el-table-column prop="signalStrength" label="型号强度"></el-table-column>
-        <el-table-column prop="warningStatus" label="告警状态"></el-table-column>
+        <el-table-column prop="warningStatus" label="告警状态">
+          <template slot-scope="scope">{{scope.row.warningStatus | wallCover_toWaringStarus}}</template>
+        </el-table-column>
       </el-table>
     </div>
     <div class="pagination mt20">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
+        :current-page="filter.pageIndex"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="10"
+        :page-size="filter.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="3"
+        :total="total"
       ></el-pagination>
     </div>
   </div>
@@ -47,43 +57,80 @@ export default {
   name: "",
   data() {
     return {
-      imei: this.$route.params.id,
-      timeFrame: 2,
-      options: [
-        { value: 1, label: "半年内" },
-        { value: 2, label: "一个月内" },
-        { value: 3, label: "一周内" }
-      ],
-      monitorList: [
-        {
-          createDate: "2019-04-08", // 	时间
-          battery: "3.7V", // 	电量
-          waterLevel: "2000 MM", // 	水位
-          brightness: "500 cd/m2", // 	亮度
-          isTilt: "否", // 	是否倾斜
-          signalStrength: "正常", // 	信号强度
-          warningStatus: "水位高" // 	告警状态	(2：信号弱，3：倾斜大，4:水位高，5:亮度高，6.电量低，)
-        },
-        {
-          createDate: "2019-04-08", // 	时间
-          battery: "3.7V", // 	电量
-          waterLevel: "2000 MM", // 	水位
-          brightness: "500 cd/m2", // 	亮度
-          isTilt: "否", // 	是否倾斜
-          signalStrength: "正常", // 	信号强度
-          warningStatus: "水位高" // 	告警状态	(2：信号弱，3：倾斜大，4:水位高，5:亮度高，6.电量低，)
-        },
-        {
-          createDate: "2019-04-08", // 	时间
-          battery: "3.7V", // 	电量
-          waterLevel: "2000 MM", // 	水位
-          brightness: "500 cd/m2", // 	亮度
-          isTilt: "否", // 	是否倾斜
-          signalStrength: "正常", // 	信号强度
-          warningStatus: "水位高" // 	告警状态	(2：信号弱，3：倾斜大，4:水位高，5:亮度高，6.电量低，)
-        }
-      ]
+      filter: {
+        createDate: [], //	创建日期
+        pageIndex: 1,
+        pageSize: 10
+      },
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
+      monitorList: [],
+      total: 0
     };
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  mounted() {
+    this.getDevicePropsById(this.id);
+  },
+  methods: {
+    query() {
+      this.getDevicePropsById(this.id);
+    },
+    getDevicePropsById(id) {
+      let api = "/monitor/getWellCoverMonitorById";
+      let params = {
+        deviceId: id,
+        ...this.filter
+      };
+      this.$fetch.post(api, params).then(res => {
+        if (res.code === 10000) {
+          this.monitorList = res.data;
+          this.total = res.total;
+        }
+      });
+    },
+    handleSizeChange(val) {
+      this.filter.pageSize = val;
+      this.getDeviceWarningById(this.id);
+    },
+    handleCurrentChange(val) {
+      this.filter.pageIndex = val;
+      this.getDeviceWarningById(this.id);
+    }
   }
 };
 </script>

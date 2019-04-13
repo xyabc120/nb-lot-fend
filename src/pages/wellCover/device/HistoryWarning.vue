@@ -1,17 +1,23 @@
 <template>
   <div class="warning">
     <div class="filter mb20">
-      <span>告警设备：{{imei}}</span>
-      <div class>
+      <span>
+        <!-- 告警设备：{{imei}} -->
+      </span>
+      <div>
         <label>时间范围</label>
-        <el-select v-model="timeFrame" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+        <el-date-picker
+          v-model="filter.createDate"
+          type="daterange"
+          align="right"
+          unlink-panels
+          value-format="yyyy-MM-dd"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          @change="query()"
+        ></el-date-picker>
       </div>
     </div>
     <div class="table">
@@ -22,16 +28,17 @@
       >
         <el-table-column prop="imei" label="imei" width="180"></el-table-column>
         <el-table-column prop="deviceName" label="设备名称"></el-table-column>
-        <el-table-column prop="warningType" label="告警类型"></el-table-column>
-        <el-table-column prop="warningStatus" label="告警状态"></el-table-column>
+        <el-table-column prop="warningStatus" label="告警状态">
+          <template slot-scope="scope">{{scope.row.warningStatus | wallCover_toWaringStarus}}</template>
+        </el-table-column>
         <el-table-column prop="warningDate" label="告警时间"></el-table-column>
         <el-table-column prop="reason" label="消除原因"></el-table-column>
         <el-table-column prop="eliminateDate" label="消除时间"></el-table-column>
         <el-table-column label="操作">
-          <template slot-scope="scope">
+          <template slot-scope="scope" v-if="scope.row.warningType === 0">
             <el-button
               v-if="scope.$index === 0 || scope.$index === 2"
-              @click.native.prevent="deleteRow(scope.$index, tableData)"
+              @click.native.prevent="()=>{row=scope.row; dialogFormVisible = !dialogFormVisible}"
               type="text"
               size="mini"
             >消除</el-button>
@@ -43,13 +50,31 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
+        :current-page="filter.pageIndex"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="10"
+        :page-size="filter.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="3"
+        :total="total"
       ></el-pagination>
     </div>
+
+    <el-dialog title="告警消除" :visible.sync="dialogFormVisible">
+      <el-form>
+        <el-form-item label="消除原因:" label-width="80px">
+          <el-input
+            type="textarea"
+            v-model="reason"
+            autocomplete="off"
+            :autosize="{ minRows: 2, maxRows: 4}"
+            placeholder="请输入消除原因"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="eliminateDeviceWarningById()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -57,46 +82,107 @@ export default {
   name: "HistoryWarning",
   data() {
     return {
-      imei: this.$route.params.id,
-      timeFrame: 2,
-      options: [
-        { value: 1, label: "半年内" },
-        { value: 2, label: "一个月内" },
-        { value: 3, label: "一周内" }
-      ],
-      warningList: [
-        {
-          id: "1221", // 	id
-          imei: this.$route.params.id, // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "", // 	消除原因
-          eliminateDate: "" // 	消除时间
-        },
-        {
-          id: "1221", // 	id
-          imei: this.$route.params.id, // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "系统消除", // 	消除原因
-          eliminateDate: "2019-04-04 21:37:27" // 	消除时间
-        },
-        {
-          id: "1221", // 	id
-          imei: this.$route.params.id, // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "", // 	消除原因
-          eliminateDate: "" // 	消除时间
-        }
-      ]
+      filter: {
+        createDate: [], //	创建日期
+        pageIndex: 1,
+        pageSize: 10
+      },
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
+      warningList: [],
+      total: 0,
+      row: {},
+      dialogFormVisible: false,
+      reason: ""
     };
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  mounted() {
+    this.getDeviceWarningById(this.id);
+  },
+  methods: {
+    // 查询
+    query: function() {
+      this.getDeviceWarningById(this.id);
+    },
+    getDeviceWarningById(id) {
+      let api = "/alarm/getWellCoverAlarmById";
+      let params = {
+        deviceId: id,
+        ...this.filter
+      };
+      this.$fetch.post(api, params).then(res => {
+        if (res.code === 10000) {
+          this.warningList = res.data;
+          this.total = res.total;
+        }
+      });
+    },
+    // 消除告警
+    eliminateDeviceWarningById() {
+      let api = "/alarm/eliminateWellCoverAlarmById";
+      let params = {
+        id: this.row.id,
+        reason: this.reason
+      };
+      this.dialogFormVisible = !this.dialogFormVisible;
+      this.$fetch.post(api, params).then(res => {
+        if (res.code === 10000) {
+          this.$message({
+            message: "消除成功！",
+            type: "success"
+          });
+          this.getDeviceWarningById(this.id);
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error"
+          });
+        }
+      });
+    },
+    handleSizeChange(val) {
+      this.filter.pageSize = val;
+      this.getDeviceWarningById(this.id);
+    },
+    handleCurrentChange(val) {
+      this.filter.pageIndex = val;
+      this.getDeviceWarningById(this.id);
+    }
   }
 };
 </script>

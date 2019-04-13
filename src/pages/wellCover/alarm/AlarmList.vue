@@ -24,6 +24,7 @@
             <el-date-picker
               clearable
               v-model="filter.createDate"
+              value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
@@ -32,7 +33,7 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="query()">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -40,8 +41,9 @@
         <el-table :data="warningList" border style="width: 100%">
           <el-table-column prop="imei" label="imei" width="170"></el-table-column>
           <el-table-column prop="deviceName" label="设备名称"></el-table-column>
-          <el-table-column prop="warningType" label="告警类型"></el-table-column>
-          <el-table-column prop="warningStatus" label="告警状态"></el-table-column>
+          <el-table-column prop="warningStatus" label="告警状态">
+            <template slot-scope="scope">{{scope.row.warningStatus| wallCover_toWaringStarus}}</template>
+          </el-table-column>
           <el-table-column prop="warningDate" label="告警时间">
             <template slot-scope="scope">
               <i class="el-icon-time"></i>
@@ -55,21 +57,19 @@
               <span style="margin-left: 10px">{{ scope.row.eliminateDate }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="100">
-            <template slot-scope="scope">
+          <el-table-column label="操作" width="160">
+            <template slot-scope="scope" v-if="scope.row.warningType === 0">
               <el-button
-                v-if="scope.$index === 0 || scope.$index === 2"
-                @click.native.prevent="deleteRow(scope.$index, tableData)"
+                @click.native.prevent="()=>{row=scope.row; dialogFormVisible = !dialogFormVisible}"
                 type="warning"
                 plain
                 size="mini"
               >消除</el-button>
               <el-button
-                v-else
                 @click.native.prevent="deleteRow(scope.$index, tableData)"
                 plain
                 size="mini"
-              >查看</el-button>
+              >转工单</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -78,14 +78,31 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
+          :current-page="filter.pageIndex"
           :page-sizes="[10, 20, 50, 100]"
-          :page-size="10"
+          :page-size="filter.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="total"
         ></el-pagination>
       </div>
     </div>
+    <el-dialog title="告警消除" :visible.sync="dialogFormVisible">
+      <el-form>
+        <el-form-item label="消除原因:" label-width="80px">
+          <el-input
+            type="textarea"
+            v-model="reason"
+            autocomplete="off"
+            :autosize="{ minRows: 2, maxRows: 4}"
+            placeholder="请输入消除原因"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="eliminateDeviceWarningById()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -97,96 +114,71 @@ export default {
         deviceName: "", //	设备名称
         address: "", //	地址
         warningStatus: "", //告警状态
-        createDate: "" //	创建日期
+        createDate: [] //	创建日期
       },
-      warningList: [
-        {
-          id: "1221", // 	id
-          imei: "823969794871982874", // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "", // 	消除原因
-          eliminateDate: "" // 	消除时间
-        },
-        {
-          id: "1221", // 	id
-          imei: "823969794871982874", // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "系统消除", // 	消除原因
-          eliminateDate: "2019-04-04 21:37:27" // 	消除时间
-        },
-        {
-          id: "1221", // 	id
-          imei: "823969794871982874", // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "", // 	消除原因
-          eliminateDate: "" // 	消除时间
-        },
-        {
-          id: "1221", // 	id
-          imei: "823969794871982874", // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "系统消除", // 	消除原因
-          eliminateDate: "2019-04-04 21:37:27" // 	消除时间
-        },
-        {
-          id: "1221", // 	id
-          imei: "823969794871982874", // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "系统消除", // 	消除原因
-          eliminateDate: "2019-04-04 21:37:27" // 	消除时间
-        },
-        {
-          id: "1221", // 	id
-          imei: "823969794871982874", // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "系统消除", // 	消除原因
-          eliminateDate: "2019-04-04 21:37:27" // 	消除时间
-        },
-        {
-          id: "1221", // 	id
-          imei: "823969794871982874", // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "系统消除", // 	消除原因
-          eliminateDate: "2019-04-04 21:37:27" // 	消除时间
-        },
-        {
-          id: "1221", // 	id
-          imei: "823969794871982874", // 	imei
-          deviceName: "测试井盖", // 	设备名称
-          warningType: "倾斜", // 	告警类型
-          warningStatus: "倾斜", // 	告警状态
-          warningDate: "2019-04-04 21:37:27", // 	告警时间
-          reason: "系统消除", // 	消除原因
-          eliminateDate: "2019-04-04 21:37:27" // 	消除时间
-        }
-      ],
-      currentPage: 1
+      warningList: [],
+      total: 0,
+      row: {},
+      dialogFormVisible: false,
+      reason: ""
     };
   },
+  mounted() {
+    this.getDeviceWarningById();
+  },
   methods: {
-    handleSizeChange() {},
-    handleCurrentChange() {}
+    query() {
+      this.getDeviceWarningById();
+    },
+    getDeviceWarningById() {
+      let api = "alarm/getWellCoverAlarmList";
+      let params = {
+        ...this.filter
+      };
+      this.$fetch.post(api, params).then(res => {
+        if (res.code === 10000) {
+          this.warningList = res.data;
+          this.total = res.total;
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error"
+          });
+        }
+      });
+    },
+
+    // 消除告警
+    eliminateDeviceWarningById() {
+      let api = "/alarm/eliminateWellCoverAlarmById";
+      let params = {
+        id: this.row.id,
+        reason: this.reason
+      };
+      this.dialogFormVisible = !this.dialogFormVisible;
+      this.$fetch.post(api, params).then(res => {
+        if (res.code === 10000) {
+          this.$message({
+            message: "消除成功！",
+            type: "success"
+          });
+          this.getDeviceWarningById(this.id);
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error"
+          });
+        }
+      });
+    },
+    handleSizeChange(val) {
+      this.filter.pageSize = val;
+      this.getDeviceWarningById();
+    },
+    handleCurrentChange(val) {
+      this.filter.pageIndex = val;
+      this.getDeviceWarningById();
+    }
   }
 };
 </script>

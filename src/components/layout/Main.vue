@@ -22,7 +22,7 @@
       </el-menu>
     </div>
     <!-- 右边页面 -->
-    <router-view class="content"></router-view>
+    <router-view class="content">asdfasdf</router-view>
   </div>
 </template>
 
@@ -76,6 +76,7 @@ export default {
 <style lang="scss">
 .main {
   height: 100%;
+  width: 100%;
   .menu {
     width: 215px;
     height: 100%;

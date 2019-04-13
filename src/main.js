@@ -3,6 +3,7 @@
 import Vue from "vue";
 import App from "./App";
 import VueRouter from "vue-router";
+import Filters from './filters'
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import "../theme/element-variables.scss"; // 主题
@@ -32,6 +33,7 @@ Vue.config.productionTip = false;
 Vue.component('v-chart', ECharts)
 
 Vue.use(VueRouter);
+Vue.use(Filters);
 Vue.use(ElementUI);
 Vue.use(VueAMap);
 
