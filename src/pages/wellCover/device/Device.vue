@@ -174,7 +174,7 @@
     <div class="device-info mt20">
       <el-row :gutter="1">
         <el-col :span="24">
-          <div class="card h260">
+          <div class="card h420">
             <div class="card-title">位置信息</div>
             <el-amap
               class="amap-box"
@@ -338,7 +338,7 @@ export default {
   }
   .amap-box {
     width: 100%;
-    height: 200px;
+    height: 360px;
   }
 }
 </style>
