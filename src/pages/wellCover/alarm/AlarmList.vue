@@ -13,11 +13,12 @@
 
           <el-form-item label="告警状态">
             <el-select v-model="filter.warningStatus" clearable placeholder="告警状态">
-              <el-option label="离线" value="1"></el-option>
-              <el-option label="倾斜" value="2"></el-option>
-              <el-option label="亏电" value="3"></el-option>
-              <el-option label="信号弱" value="4"></el-option>
-              <el-option label="溢水" value="5"></el-option>
+              <el-option label="未上电" :value="1"></el-option>
+              <el-option label="信号弱" :value="2"></el-option>
+              <el-option label="倾斜大" :value="3"></el-option>
+              <el-option label="水位高" :value="4"></el-option>
+              <el-option label="亮度高" :value="5"></el-option>
+              <el-option label="电量低" :value="6"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="告警日期">

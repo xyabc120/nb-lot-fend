@@ -12,7 +12,7 @@ export default {
 
 <style lang="scss">
 #app {
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   background: #f5f5f5;
 }

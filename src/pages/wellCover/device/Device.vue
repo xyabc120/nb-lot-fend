@@ -179,12 +179,12 @@
             <el-amap
               class="amap-box"
               :vid="'amap'+new Date()"
-              :zoom="18"
+              :zoom="11"
               :center="device.deviceInfo.postion"
             >
               <el-amap-marker
                 :position="device.deviceInfo.postion"
-                :content="dom_jg"
+                :content="device.deviceProps.warningStatus ? dom_jg_red : dom_jg "
                 :animation="'AMAP_ANIMATION_DROP'"
                 :offset="[-16,-14]"
                 :events="{click: () => {
@@ -196,7 +196,9 @@
                 :visible="windowDom.visible"
                 :content="windowDom.content"
                 :offset="[0,-5]"
-                @close="closeWindow()"
+                :events="{close: () => {
+                  closeWindow();
+                }}"
               ></el-amap-info-window>
             </el-amap>
           </div>
@@ -212,6 +214,8 @@ export default {
     return {
       dom_jg:
         "<img src='https://www.legendfly.site/image-shiding/pic_03.png' style='width:33px;height:33px;'></img>",
+      dom_jg_red:
+        "<img src='https://www.legendfly.site/image-shiding/pic_02.png' style='width:33px;height:33px;'></img>",
       windowDom: {
         position: [121.605699, 31.169571],
         visible: false,
@@ -221,7 +225,7 @@ export default {
       device: {
         deviceInfo: {
           id: null, //	id
-          imei: "1234567654321", //	设备编号
+          imei: "123456654321", //	设备编号
           deviceName: "测试井盖", //	设备名称
           address: "上海市浦东新区张江科技园", //	地址
           deviceStatus: "在线", //	设备状态
@@ -264,24 +268,6 @@ export default {
     this.getDeviceById(this.id);
   },
   methods: {
-    toWaringStarus(code) {
-      switch (code) {
-        case 0:
-          return "正常";
-        case 2:
-          return "信号弱";
-        case 3:
-          return "倾斜大";
-        case 4:
-          return "水位高";
-        case 5:
-          return "亮度高";
-        case 6:
-          return "电量低";
-        default:
-          return "";
-      }
-    },
     getDeviceById(id) {
       let api = `/wellCoverDevice/getDeviceById/${id}`;
       this.$fetch.post(api).then(res => {
@@ -299,8 +285,10 @@ export default {
       this.windowDom.position = this.device.deviceInfo.postion;
       this.windowDom.content = `<strong>IMEI：${
         this.device.deviceInfo.imei
-      }</strong><br/><hr/><p class="my-desc"><strong>状态：${this.toWaringStarus(
-        this.device.deviceInfo.deviceStatus
+      }</strong><br/><hr/><p class="my-desc"><strong>状态：${this.$options.filters[
+        "wallCover_toWaringStarus"
+      ](
+        this.device.deviceProps.warningStatus
       )}</strong> <br/> <strong>设备名称：</strong>${
         this.device.deviceInfo.deviceName
       }<br/> <strong>地址：</strong>${this.device.deviceInfo.address}</p>`;

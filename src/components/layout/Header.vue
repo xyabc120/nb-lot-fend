@@ -2,7 +2,7 @@
   <el-header>
     <div class="header-left">
       <div class="logo">
-        <img src="../../assets/imgs/logo.png" alt="智能设备管理平台">
+        <img src="../../assets/imgs/qt_logo.png" alt="智能设备管理平台">
         <span>智能终端管理平台</span>
       </div>
     </div>

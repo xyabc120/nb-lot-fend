@@ -104,8 +104,8 @@ export default {
       };
       this.fullscreenLoading = true;
       this.$fetch.post(api, params).then(res => {
+        this.fullscreenLoading = false;
         if (res.code === 10000) {
-          this.fullscreenLoading = false;
           this.$message({
             message: "保存成功！",
             type: "success"
@@ -116,7 +116,6 @@ export default {
             message: res.message,
             type: "error"
           });
-          this.fullscreenLoading = false;
         }
       });
     }

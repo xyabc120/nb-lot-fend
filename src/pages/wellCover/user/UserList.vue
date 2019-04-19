@@ -128,8 +128,11 @@ export default {
       };
       this.$fetch.post(api, params).then(res => {
         if (res.code === 10000) {
-          this.$message({
-            message: "操作成功！",
+          this.$notify({
+            title: "警告",
+            message: `用户【 ${user.userName} 】状态已${
+              user.status === "1" ? "启用" : "停用"
+            }`,
             type: "success"
           });
           // 更新行数据

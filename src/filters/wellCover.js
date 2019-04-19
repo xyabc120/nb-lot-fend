@@ -2,6 +2,8 @@ exports.wallCover_toWaringStarus = value => {
   switch (value) {
     case 0:
       return '正常';
+    case 1:
+      return '未上电';
     case 2:
       return '信号弱';
     case 3:

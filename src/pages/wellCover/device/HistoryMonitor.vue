@@ -33,7 +33,7 @@
         <el-table-column prop="waterLevel" label="水位"></el-table-column>
         <el-table-column prop="brightness" label="亮度"></el-table-column>
         <el-table-column prop="isTilt" label="是否倾斜"></el-table-column>
-        <el-table-column prop="signalStrength" label="型号强度"></el-table-column>
+        <el-table-column prop="signalStrength" label="信号强度"></el-table-column>
         <el-table-column prop="warningStatus" label="告警状态">
           <template slot-scope="scope">{{scope.row.warningStatus | wallCover_toWaringStarus}}</template>
         </el-table-column>

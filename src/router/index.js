@@ -19,6 +19,8 @@ const WELL_COVER_DEVICE_INFO = resolve => require(["@/pages/wellCover/device/Dev
 const WELL_COVER_ALARM_LIST = resolve => require(["@/pages/wellCover/alarm/AlarmList.vue"], resolve);
 // 工单管理
 const WELL_COVER_WORK_ORDER = resolve => require(["@/pages/wellCover/workorder/WorkOrderList.vue"], resolve);
+const WELL_COVER_ADD_WORK_ORDER = resolve => require(["@/pages/wellCover/workorder/AddWorkOrder.vue"], resolve);
+const WELL_COVER_WORK_ORDER_DETAIL = resolve => require(["../pages/wellCover/workorder/WorkOrderDetail.vue"], resolve);
 // 设备分部
 const WELL_COVER_MAP_VIEW = resolve => require(["@/pages/wellCover/mapview/index.vue"], resolve);
 // 系统设置
@@ -77,7 +79,18 @@ export default [{
           path: "/app/wellCover/workorder",
           name: "workorder",
           component: WELL_COVER_WORK_ORDER,
-        }, {
+        },
+        {
+          path: "/app/wellCover/workorder/add",
+          name: "addworkorder",
+          component: WELL_COVER_ADD_WORK_ORDER,
+        },
+        {
+          path: "/app/wellCover/workorder/:id",
+          name: "workorderdetail",
+          component: WELL_COVER_WORK_ORDER_DETAIL,
+        },
+        {
           path: "/app/wellCover/mapview",
           name: "mapview",
           component: WELL_COVER_MAP_VIEW,

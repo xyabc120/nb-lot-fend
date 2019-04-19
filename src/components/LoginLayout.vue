@@ -24,7 +24,7 @@
 </template>
 
 <script type="text/javascript">
-import img_logo from "@/assets/imgs/jg.png";
+import img_logo from "@/assets/imgs/qt_logo.png";
 
 export default {
   data() {

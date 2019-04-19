@@ -15,11 +15,12 @@
           </el-form-item>
           <el-form-item label>
             <el-select v-model="filter.warningStatus" clearable placeholder="告警状态">
-              <el-option label="离线" value="1"></el-option>
-              <el-option label="倾斜" value="2"></el-option>
-              <el-option label="亏电" value="3"></el-option>
-              <el-option label="信号弱" value="4"></el-option>
-              <el-option label="溢水" value="5"></el-option>
+              <el-option label="未上电" :value="1"></el-option>
+              <el-option label="信号弱" :value="2"></el-option>
+              <el-option label="倾斜大" :value="3"></el-option>
+              <el-option label="水位高" :value="4"></el-option>
+              <el-option label="亮度高" :value="5"></el-option>
+              <el-option label="电量低" :value="6"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="创建日期">
@@ -58,7 +59,7 @@
                 :type="scope.row.deviceStatus ? 'info' : 'danger'"
                 :color="'#ffffff'"
                 :hit="false"
-                :size="'mini'"
+                size="mini"
               >{{scope.row.deviceStatus | toDeviceStatus}}</el-tag>
             </template>
           </el-table-column>
@@ -67,7 +68,7 @@
               <el-tag
                 :type="scope.row.warningStatus === 0 ? 'primary' : 'warning'"
                 disable-transitions
-                :size="'small'"
+                size="mini"
               >{{scope.row.warningStatus | wallCover_toWaringStarus}}</el-tag>
             </template>
           </el-table-column>
@@ -209,7 +210,7 @@ export default {
       this.$router.push({
         name: "deviceedit",
         params: {
-          id: obj.imei
+          id: obj.id
         }
       });
     },

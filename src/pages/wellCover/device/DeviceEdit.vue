@@ -56,8 +56,8 @@
                     placeholder="请选择合同状态"
                     style="width:100%;"
                   >
-                    <el-option label="试用" :value="1"></el-option>
-                    <el-option label="正式" :value="2"></el-option>
+                    <el-option label="试用" value="1"></el-option>
+                    <el-option label="正式" value="2"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -214,7 +214,7 @@ export default {
       platformList: [],
       device: {
         deviceInfo: {
-          id: "", // 	id	唯一标识
+          id: this.$route.params.id, // 	id	唯一标识
           imei: "", // 	设备编号
           deviceName: "", // 	设备名称
           address: "", // 	地址
@@ -243,7 +243,7 @@ export default {
       dom_jg:
         "<img src='https://www.legendfly.site/image-shiding/pic_03.png' style='width:33px;height:33px;'></img>",
       amapManager,
-      zoom: 12,
+      zoom: 10,
       mapCenter: [],
       events: {
         init: o => {
@@ -275,10 +275,31 @@ export default {
     };
   },
   mounted() {
-    this.getLocation();
-    this.getPlatforms();
+    this.getLocation(); // 根据ip地址获取位置信息
+    this.getPlatforms(); // 获取运营商信息
+    this.init(); // 初始化数据
   },
   methods: {
+    init() {
+      if (this.device.deviceInfo.id == "0") {
+        this.device.deviceInfo.id = "";
+      } else {
+        this.getDeviceByid(this.device.deviceInfo.id);
+      }
+    },
+    getDeviceByid(id) {
+      let api = `/wellCoverDevice/getDeviceById/${id}`;
+      this.$fetch.post(api).then(res => {
+        if (res.code === 10000) {
+          this.device = res.data;
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error"
+          });
+        }
+      });
+    },
     // 根据IP定位，设置地图中心点
     getLocation() {
       axios
@@ -332,7 +353,8 @@ export default {
     saveDevice() {
       let api = "/wellCoverDevice/saveDeviceInfo";
       let params = {
-        ...this.device
+        deviceInfo: this.device.deviceInfo,
+        sim: this.device.sim
       };
       this.fullscreenLoading = true;
       this.$fetch.post(api, params).then(res => {
