@@ -35,8 +35,10 @@
         </el-form>
       </div>
       <el-radio-group v-model="filter.type" size="small" @change="handleClick">
-        <el-radio-button label="0">发起的工单</el-radio-button>
-        <el-radio-button label="1">待办工单</el-radio-button>
+        <el-radio-button label="0">所有工单</el-radio-button>
+        <el-radio-button label="1">发起的工单</el-radio-button>
+        <el-radio-button label="2">待办工单</el-radio-button>
+        <el-radio-button label="3">参与的工单</el-radio-button>
       </el-radio-group>
       <div class="table">
         <el-table :data="workOrderList" border style="width: 100%">

@@ -22,7 +22,7 @@
           <el-input v-model="user.phone"></el-input>
         </el-form-item>
         <el-form-item label="电子邮箱" prop="email">
-          <el-input v-model="user.email"></el-input>
+          <el-input v-model="user.email" maxlength="50"></el-input>
         </el-form-item>
         <el-form-item label="用户类型" prop="userType">
           <el-select v-model="user.userType" placeholder="请选择用户类型">
@@ -42,7 +42,7 @@
         <el-form-item>
           <el-button
             type="primary"
-            @click="saveUser()"
+            @click="saveUser('ruleForm')"
             v-loading.fullscreen.lock="fullscreenLoading"
           >保存</el-button>
           <el-button @click="() => this.$router.back()">取消</el-button>
@@ -69,7 +69,50 @@ export default {
         userType: 2, //	用户类型
         status: 0 //	状态
       },
-      rules: {}
+      rules: {
+        userName: [
+          { required: true, message: "请输入姓名", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "姓名长度在 2 到 20 个字符",
+            trigger: "blur"
+          }
+        ],
+        gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
+        jobNumber: [
+          { required: true, message: "请输入工号", trigger: "blur" },
+          { max: 20, message: "工号长度在 1 到 20 个字符", trigger: "blur" }
+        ],
+        loginName: [
+          { required: true, message: "请输入登录名", trigger: "blur" },
+          {
+            min: 3,
+            max: 20,
+            message: "登录名长度在 3 到 20 个字符",
+            trigger: "blur"
+          }
+        ],
+        phone: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          {
+            min: 11,
+            max: 11,
+            message: "手机号长度必须为11 个字符",
+            trigger: "blur"
+          },
+          {
+            pattern: /^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\D])|(18[0-9]))\d{8}$/,
+            message: "手机号格式不正确"
+          }
+        ],
+        email: [
+          {
+            pattern: /^([a-z0-9A-Z]+[-|\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\.)+[a-zA-Z]{2,}$/,
+            message: "电子邮箱格式不正确"
+          }
+        ]
+      }
     };
   },
   mounted() {
@@ -97,7 +140,21 @@ export default {
         }
       });
     },
-    saveUser() {
+    saveUser(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.submit();
+        } else {
+          this.$notify({
+            title: "提示",
+            message: "表单验证失败！",
+            type: "error"
+          });
+          return false;
+        }
+      });
+    },
+    submit() {
       let api = "/user/saveUser ";
       let params = {
         ...this.user

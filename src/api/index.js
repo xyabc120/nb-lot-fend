@@ -32,14 +32,14 @@ let request = {
 
 function isIE(data) { //ie?
   if (!!window.ActiveXObject || "ActiveXObject" in window)
-   return JSON.parse(data);
-   else
-   return data;
-  }
+    return JSON.parse(data);
+  else
+    return data;
+}
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) { // 请求成功的回调
-  if(isIE(response.data).code==-1){
+  if (isIE(response.data).code === 50000) {
     window.location.href = '#/login'
     // history.go(0)
   }
@@ -47,7 +47,7 @@ axios.interceptors.response.use(function (response) { // 请求成功的回调
   return Promise.resolve(isIE(response.data))
 }, function (error) { // 请求失败的回调
   console.log(error);
-  
+
   if (error.response) { // 请求已发出，但服务器响应的状态码不在 2xx 范围内
     console.error(error)
     var response = error.response

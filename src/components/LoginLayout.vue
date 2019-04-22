@@ -4,9 +4,9 @@
       <div class="header">
         <a href="#" class="meta">
           <img class="logo" :src="img_logo" alt="logo">
-          <span class="title">QT-Iot</span>
+          <!-- <span class="title">QT-Iot</span> -->
         </a>
-        <p class="desc">契通物联智能设备管理平台</p>
+        <!-- <p class="desc">智能设备管理平台</p> -->
       </div>
 
       <router-view></router-view>
@@ -24,7 +24,7 @@
 </template>
 
 <script type="text/javascript">
-import img_logo from "@/assets/imgs/qt_logo.png";
+import img_logo from "@/assets/imgs/logo-qt.png";
 
 export default {
   data() {
@@ -89,7 +89,7 @@ export default {
   }
   .logo {
     margin-right: 10px;
-    width: 68px;
+    width: 205px;
   }
   .el-checkbox__label {
     font-size: 13px;
