@@ -119,7 +119,7 @@
       </el-row>
     </div>
 
-    <div class="device-info mt20">
+    <div class="device-info mt10">
       <el-row :gutter="1">
         <el-col :span="24">
           <div class="card h150">
@@ -171,7 +171,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="device-info mt20">
+    <div class="device-info mt10">
       <el-row :gutter="1">
         <el-col :span="24">
           <div class="card h420">

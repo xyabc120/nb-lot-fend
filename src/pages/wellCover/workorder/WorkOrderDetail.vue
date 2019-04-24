@@ -70,6 +70,7 @@
                                     :on-remove="removeOk2"
                                       :on-success="uploadOk2"
                                       :file-list="submitData.files"
+                                      accept='.jpg,.jpeg,.png,.gif'
 
                                        list-type="picture-card"
                                       :on-preview="handlePictureCardPreview"
@@ -127,6 +128,7 @@
                         <el-upload style="width:40%;" class="upload-demo"
                          action="http://139.196.73.153:8091/iot-backend/common/uploadImage"
                         :limit="3" :on-exceed="handleExceed"
+                        accept='.jpg,.jpeg,.png,.gif'
                         :on-remove="removeOk"
                         :on-success="uploadOk"
                         :file-list="comment.fileList"

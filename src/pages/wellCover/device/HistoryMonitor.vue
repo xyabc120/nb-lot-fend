@@ -126,11 +126,11 @@ export default {
         },
         handleSizeChange(val) {
             this.filter.pageSize = val;
-            this.getDeviceWarningById(this.id);
+            this.getDevicePropsById(this.id);
         },
         handleCurrentChange(val) {
             this.filter.pageIndex = val;
-            this.getDeviceWarningById(this.id);
+            this.getDevicePropsById(this.id);
         }
     }
 };

@@ -34,8 +34,12 @@
         </div>
 
         <div class="table">
-            <el-table :data="deviceList" border style="width: 100%">
-                <el-table-column prop="imei" label="设备编号(imei)" width="150"></el-table-column>
+            <el-table :data="deviceList" border style="width: 100%" @cell-dblclick="dblclick">
+                <el-table-column prop="imei" label="设备编号(imei)" width="150">
+                    <template slot-scope="scope">
+                        <el-button size="mini" type="text" @click="findDetail(scope.$index, scope.row)">{{`${scope.row.imei}`}}</el-button>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="deviceName" label="设备名称"></el-table-column>
                 <el-table-column prop="address" label="地址" width="220">
                     <template slot-scope="scope">
@@ -68,9 +72,9 @@
                         <span style="margin-left: 10px">{{ scope.row.lastConnetTime }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="220">
+                <el-table-column label="操作" width="160">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="findDetail(scope.$index, scope.row)">查看</el-button>
+                        <!-- <el-button size="mini" @click="findDetail(scope.$index, scope.row)">查看</el-button> -->
                         <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="()=>{dialogVisible = true; row = scope.row}">删除</el-button>
                     </template>
@@ -149,15 +153,15 @@ export default {
                 }
             });
         },
-        exportData(){
-          let api = "/wellCoverDevice/export";
+        exportData() {
+            let api = "/wellCoverDevice/export";
             let params = {
                 ...this.filter
             };
             this.$fetch.post(api, params).then(res => {
                 if (res.code === 10000) {
-                  window.open(res.data);
-                  return
+                    window.open(res.data);
+                    return
                 } else {
                     this.$message({
                         message: res.message,
@@ -191,6 +195,14 @@ export default {
                 name: "deviceinfo",
                 params: {
                     id: obj.id
+                }
+            });
+        },
+        dblclick(row) {
+            this.$router.push({
+                name: "deviceinfo",
+                params: {
+                    id: row.id
                 }
             });
         },

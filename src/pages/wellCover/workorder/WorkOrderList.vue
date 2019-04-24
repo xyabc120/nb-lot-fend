@@ -34,14 +34,16 @@
           </el-form-item>
         </el-form>
       </div>
+
       <el-radio-group v-model="filter.type" size="small" @change="handleClick">
         <el-radio-button label="0">所有工单</el-radio-button>
         <el-radio-button label="1">发起的工单</el-radio-button>
         <el-radio-button label="2">待办工单</el-radio-button>
         <el-radio-button label="3">参与的工单</el-radio-button>
       </el-radio-group>
+
       <div class="table">
-        <el-table :data="workOrderList" border style="width: 100%">
+        <el-table :data="workOrderList" border style="width: 100%" @cell-dblclick="dblclick">
           <el-table-column prop="workOrderNumber" label="工单编号" width="110">
             <template slot-scope="scope">
               <el-button
@@ -84,10 +86,10 @@
           <el-table-column prop="dispatchUser" label="当前处理人"></el-table-column>
           <el-table-column prop="updateDate" label="更新日期" width="160"></el-table-column>
           <el-table-column prop="createDate" label="创建日期" width="160"></el-table-column>
-          <el-table-column label="操作" width="150">
+          <el-table-column label="操作" width="80">
             <template slot-scope="scope">
               <!-- <el-button size="mini" @click="findDetail(scope.$index, scope.row)">查看</el-button> -->
-              <el-button size="mini" @click="handleEdit(scope.row)" plain>查看</el-button>
+              <!-- <el-button size="mini" @click="handleEdit(scope.row)" plain>查看</el-button> -->
               <el-button
                 v-if="scope.row.workOrderStatus !== 5"
                 size="mini"
@@ -196,6 +198,14 @@ export default {
       this.$router.push({
         name: "workorderdetail",
         params: { id: workOrder.id }
+      });
+    },
+    dblclick(row){
+      console.log(row);
+      this.$router.push({
+
+        name: "workorderdetail",
+        params: { id: row.id }
       });
     },
     findDetail(workOrder) {},

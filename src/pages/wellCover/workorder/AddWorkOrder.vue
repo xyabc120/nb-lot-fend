@@ -41,8 +41,14 @@
                             <el-input type="textarea" :rows="4" placeholder="请输入工单描述" v-model="workOrder.remark" maxlength="200"></el-input>
                         </el-form-item>
                         <el-form-item label="上传附件: " prop="fileList">
-                            <el-upload class="upload-demo" action="http://139.196.73.153:8091/iot-backend/common/uploadImage" :on-change="handleChange" :on-remove="removeOk" :multiple="true" :on-success="uploadOk">
-                                <el-button size="mini" type="info">点击上传</el-button>
+                            <el-upload class="upload-demo" action="http://139.196.73.153:8091/iot-backend/common/uploadImage"
+                            :on-change="handleChange"
+                            :on-remove="removeOk"
+                            :on-success="uploadOk"
+                            list-type="picture-card"
+                            accept='.jpg,.jpeg,.png,.gif'
+                            >
+                                 <i class="el-icon-plus"></i>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </el-form-item>
@@ -238,24 +244,18 @@ export default {
         },
 
         uploadOk(res, file, fileList) {
-            this.setFileList(fileList);
+            let temp = {
+                uid: file.uid,
+                name: file.name,
+                url: file.response.data.url
+            }
+           this.workOrder.fileList.push(temp)
         },
         removeOk(file, fileList) {
-            this.setFileList(fileList);
-        },
-        setFileList(fileList) {
-            if (fileList && fileList.length) {
-                let tempArr = [];
-                fileList.map(file => {
-                    tempArr.push({
-                        name: file.name,
-                        url: file.response && file.response.data.url
-                    });
-                });
-                this.workOrder.fileList = tempArr;
-            } else {
-                this.workOrder.fileList = [];
-            }
+            let i = this.workOrder.fileList.findIndex((value, index, arr) => {
+                return value === file
+            });
+            this.workOrder.fileList.splice(i,1)
         },
         async validateForm(workOrderForm1, workOrderForm2) {
             let validate1 = this.$refs[workOrderForm1].validate();
