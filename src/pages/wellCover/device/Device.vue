@@ -277,7 +277,6 @@ export default {
             this.device.deviceInfo.amapLongitude,
             this.device.deviceInfo.amapLatitude
           ];
-          console.log(this.device);
         }
       });
     },
