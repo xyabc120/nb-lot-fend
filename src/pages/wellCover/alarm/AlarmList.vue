@@ -3,7 +3,7 @@
     <div class="page-title">设备告警</div>
     <div class="page-content">
       <div class="filter">
-        <el-form :inline="true" :model="filter" class="demo-form-inline">
+        <el-form :inline="true" :model="filter" size="small">
           <el-form-item label="设备编号">
             <el-input v-model="filter.imei" placeholder="请输入设备编号"></el-input>
           </el-form-item>

@@ -18,17 +18,17 @@ const WELL_COVER_DEVICE_INFO = resolve => require(["@/pages/wellCover/device/Dev
 // 设备告警
 const WELL_COVER_ALARM_LIST = resolve => require(["@/pages/wellCover/alarm/AlarmList.vue"], resolve);
 // 工单管理
-const WELL_COVER_WORK_ORDER = resolve => require(["@/pages/wellCover/workorder/WorkOrderList.vue"], resolve);
-const WELL_COVER_ADD_WORK_ORDER = resolve => require(["@/pages/wellCover/workorder/AddWorkOrder.vue"], resolve);
-const WELL_COVER_WORK_ORDER_DETAIL = resolve => require(["../pages/wellCover/workorder/WorkOrderDetail.vue"], resolve);
+const WORK_ORDER = resolve => require(["@/pages/wellCover/workorder/WorkOrderList.vue"], resolve);
+const WORK_ORDER_ADD = resolve => require(["@/pages/wellCover/workorder/AddWorkOrder.vue"], resolve);
+const WORK_ORDER_DETAIL = resolve => require(["../pages/wellCover/workorder/WorkOrderDetail.vue"], resolve);
 // 设备分部
 const WELL_COVER_MAP_VIEW = resolve => require(["@/pages/wellCover/mapview/index.vue"], resolve);
 // 系统设置
-const WELL_COVER_SYSTEM_CONFIG = resolve => require(["@/pages/wellCover/system/index.vue"], resolve);
+const SYSTEM_CONFIG = resolve => require(["@/pages/wellCover/system/index.vue"], resolve);
 // 用户管理
-const WELL_COVER_USER_MANAGE = resolve => require(["@/pages/wellCover/user/UserList.vue"], resolve);
+const USER_MANAGE = resolve => require(["@/pages/wellCover/user/UserList.vue"], resolve);
 // 用户编辑
-const WELL_COVER_USER_EDIT = resolve => require(["@/pages/wellCover/user/UserEdit.vue"], resolve);
+const USER_EDIT = resolve => require(["@/pages/wellCover/user/UserEdit.vue"], resolve);
 
 
 export default [{
@@ -58,37 +58,48 @@ export default [{
           name: "dashboard",
           component: WELL_COVER_DASHBOARD,
         }, {
-          path: "/app/wellCover/devicelist",
-          name: "devicelist",
+          path: "/app/wellCover/devicemanager",
+          name: "devicemanager",
           component: WELL_COVER_DEVICE_LIST,
-        }, {
-          path: "/app/wellCover/deviceedit/:id",
-          name: "deviceedit",
+        },
+        {
+          path: "/app/wellCover/devicemanager/edit/:id",
+          name: "device-manager-edit",
           component: WELL_COVER_DEVICE_EDIT,
         },
         {
-          path: "/app/wellCover/deviceinfo/:id",
-          name: "deviceinfo",
+          path: "/app/wellCover/devicemanager/detail/:id",
+          name: "device-manager-detail",
           component: WELL_COVER_DEVICE_INFO,
         },
+        // {
+        //   path: "/app/wellCover/deviceedit/:id",
+        //   name: "deviceedit",
+        //   component: WELL_COVER_DEVICE_EDIT,
+        // },
+        // {
+        //   path: "/app/wellCover/deviceinfo/:id",
+        //   name: "deviceinfo",
+        //   component: WELL_COVER_DEVICE_INFO,
+        // },
         {
           path: "/app/wellCover/alarmList",
           name: "alarmList",
           component: WELL_COVER_ALARM_LIST,
         }, {
-          path: "/app/wellCover/workorder",
+          path: "/app/workorder",
           name: "workorder",
-          component: WELL_COVER_WORK_ORDER,
+          component: WORK_ORDER,
         },
         {
-          path: "/app/wellCover/workorder/add",
+          path: "/app/workorder/add",
           name: "addworkorder",
-          component: WELL_COVER_ADD_WORK_ORDER,
+          component: WORK_ORDER_ADD,
         },
         {
-          path: "/app/wellCover/workorder/:id",
+          path: "/app/workorder/:id",
           name: "workorderdetail",
-          component: WELL_COVER_WORK_ORDER_DETAIL,
+          component: WORK_ORDER_DETAIL,
         },
         {
           path: "/app/wellCover/mapview",
@@ -96,19 +107,19 @@ export default [{
           component: WELL_COVER_MAP_VIEW,
         },
         {
-          path: "/app/wellCover/systemconfig",
+          path: "/app/systemconfig",
           name: "systemconfig",
-          component: WELL_COVER_SYSTEM_CONFIG,
+          component: SYSTEM_CONFIG,
         },
         {
-          path: "/app/wellCover/usermanage",
+          path: "/app/usermanage",
           name: "usermanage",
-          component: WELL_COVER_USER_MANAGE,
+          component: USER_MANAGE,
         },
         {
-          path: '/app/wellCover/useredit/:id',
+          path: '/app/usermanage/useredit/:id',
           name: 'useredit',
-          component: WELL_COVER_USER_EDIT,
+          component: USER_EDIT,
         }
       ]
     }]

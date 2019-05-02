@@ -3,7 +3,7 @@
     <div class="page-title">设备管理</div>
     <div class="page-content">
         <div class="filter">
-            <el-form :inline="true" :model="filter" class="demo-form-inline">
+            <el-form :inline="true" :model="filter"  size="small">
                 <el-form-item label>
                     <el-input v-model="filter.imei" placeholder="请输入设备编号" clearable></el-input>
                 </el-form-item>
@@ -34,49 +34,46 @@
         </div>
 
         <div class="table">
-            <el-table :data="deviceList" border style="width: 100%" @cell-dblclick="dblclick">
-                <el-table-column prop="imei" label="设备编号(imei)" width="150">
+            <el-table :data="deviceList" border @cell-dblclick="dblclick">
+                <el-table-column prop="imei" label="设备编号(imei)" >
                     <template slot-scope="scope">
                         <el-button size="mini" type="text" @click="findDetail(scope.$index, scope.row)">{{`${scope.row.imei}`}}</el-button>
                     </template>
                 </el-table-column>
-                <el-table-column prop="deviceName" label="设备名称"></el-table-column>
-                <el-table-column prop="address" label="地址" width="220">
+                <el-table-column prop="deviceName" label="设备名称" ></el-table-column>
+                <el-table-column prop="address" label="地址" >
                     <template slot-scope="scope">
                         <el-tooltip class="item" effect="light" :content="scope.row.address" placement="top">
-                            <span>{{scope.row.address | substring(13)}}</span>
+                            <span>{{scope.row.address | substring(10)}}</span>
                         </el-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column prop="deviceStatus" label="设备状态">
                     <template slot-scope="scope">
-                        <el-tag :type="scope.row.deviceStatus ? 'info' : 'danger'" :color="'#ffffff'" :hit="false" size="mini">{{scope.row.deviceStatus | toDeviceStatus}}</el-tag>
+                      <el-tag v-if='scope.row.deviceStatus === 0' type="info" :color="'#ffffff'" :hit="false" size="mini">未上电</el-tag>
+                      <el-tag v-if='scope.row.deviceStatus === 1' type="primary" :color="'#ffffff'" :hit="false" size="mini">在线</el-tag>
+                      <el-tag v-if='scope.row.deviceStatus === 2' type="danger" :color="'#ffffff'" :hit="false" size="mini">告警 ({{scope.row.warningStatusName}})</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column prop="warningStatus" label="告警状态">
-                    <template slot-scope="scope">
-                        <el-tag :type="scope.row.warningStatus === 0 ? 'primary' : 'warning'" disable-transitions size="mini">{{scope.row.warningStatus | wallCover_toWaringStarus}}</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="platform" label="接入运营商" width="100">
+                <el-table-column prop="platform" label="接入运营商" >
                     <template slot-scope="scope">{{scope.row.platform | formatPlatform}}</template>
                 </el-table-column>
-                <el-table-column prop="createTime" label="创建日期" width="100">
+                <el-table-column prop="createTime" label="创建日期" >
                     <template slot-scope="scope">
                         <span>{{scope.row.createTime.substring(0,10)}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="lastConnetTime" label="最后在线时间" width="190">
+                <el-table-column prop="lastConnetTime" label="最后在线时间" >
                     <template slot-scope="scope" v-if="scope.row.lastConnetTime">
-                        <i class="el-icon-time"></i>
+                        <!-- <i class="el-icon-time"></i> -->
                         <span style="margin-left: 10px">{{ scope.row.lastConnetTime }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="160">
+                <el-table-column label="操作">
                     <template slot-scope="scope">
                         <!-- <el-button size="mini" @click="findDetail(scope.$index, scope.row)">查看</el-button> -->
-                        <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="()=>{dialogVisible = true; row = scope.row}">删除</el-button>
+                        <el-button size="mini" type="text" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" type="text" @click="()=>{dialogVisible = true; row = scope.row}">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -192,7 +189,7 @@ export default {
         // 查看详情
         findDetail: function (i, obj) {
             this.$router.push({
-                name: "deviceinfo",
+                name: "device-manager-detail",
                 params: {
                     id: obj.id
                 }
@@ -200,7 +197,7 @@ export default {
         },
         dblclick(row) {
             this.$router.push({
-                name: "deviceinfo",
+                name: "device-manager-detail",
                 params: {
                     id: row.id
                 }
@@ -208,7 +205,7 @@ export default {
         },
         addDevice() {
             this.$router.push({
-                name: "deviceedit",
+                name: "device-manager-edit",
                 params: {
                     id: 0
                 }
@@ -216,7 +213,7 @@ export default {
         },
         handleEdit(i, obj) {
             this.$router.push({
-                name: "deviceedit",
+                name: "device-manager-edit",
                 params: {
                     id: obj.id
                 }
