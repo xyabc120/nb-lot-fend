@@ -99,16 +99,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-login {
-}
 
 .formContainer {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  max-width: 368px;
+  max-width: 338px;
   margin: 0 auto;
-  padding: 0 3px;
+  padding: 20px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.08);
 }
 
 .formItem {
@@ -129,7 +129,8 @@ export default {
 .formTitle {
   text-align: center;
   margin: 0 0 20px;
-  color: rgba(0, 0, 0, 0.85);
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.85);
   font-weight: bold;
 }
 
@@ -197,5 +198,17 @@ export default {
 .el-checkbox {
   color: #999;
   font-size: 13px;
+}
+.el-input /deep/ input {
+  background-color: #e8f0fe;
+  &::-webkit-input-placeholder{
+    color:#5e6064;
+  }
+  &::-moz-placeholder{
+    color:#5e6064;
+  }
+  &:-ms-input-placeholder{
+    color:#5e6064;
+  }
 }
 </style>
