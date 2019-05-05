@@ -3,7 +3,7 @@
     <div class="page-title">工单管理</div>
     <div class="page-content">
       <div class="filter">
-        <el-form :inline="true" :model="filter">
+        <el-form :inline="true" :model="filter" size="small">
           <el-form-item label>
             <el-input v-model="filter.workOrderNumber" placeholder="请输入工单编号"></el-input>
           </el-form-item>
@@ -71,7 +71,6 @@
                   <el-table-column width="150" property="imei" label="设备编号"></el-table-column>
                   <el-table-column width="150" property="deviceName" label="设备名称"></el-table-column>
                 </el-table>
-                <!-- <el-button slot="reference" type="text">{{`${scope.row.deviceList[0].imei}...`}}</el-button> -->
                 <el-button slot="reference" type="text" size="mini">{{scope.row.deviceList.length}}台</el-button>
               </el-popover>
             </template>

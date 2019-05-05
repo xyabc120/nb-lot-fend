@@ -12,7 +12,7 @@
         <p class="desc">智能设备管理平台</p>
       </div>
 
-      <router-view></router-view>
+      <router-view style="z-index:1"></router-view>
 
       <div class="footer">
         <div class="links">
@@ -83,9 +83,9 @@ export default {
   // background-image: url(../assets/imgs/loginbg.png);
   // background-size: contain;
 
-  background: -webkit-linear-gradient(left top, #28405C 10%, #1A2F49 30%, #131F37 50%, #11192E 70%, #101327 100%); 
-  background: -o-linear-gradient(bottom right, #28405C 10%, #1A2F49 30%, #131F37 50%, #11192E 70%, #101327 100%); 
-  background: -moz-linear-gradient(bottom right, #28405C 10%, #1A2F49 30%, #131F37 50%, #11192E 70%, #101327 100%); 
+  background: -webkit-linear-gradient(left top, #28405C 10%, #1A2F49 30%, #131F37 50%, #11192E 70%, #101327 100%);
+  background: -o-linear-gradient(bottom right, #28405C 10%, #1A2F49 30%, #131F37 50%, #11192E 70%, #101327 100%);
+  background: -moz-linear-gradient(bottom right, #28405C 10%, #1A2F49 30%, #131F37 50%, #11192E 70%, #101327 100%);
   background: linear-gradient(to bottom right, #28405C 10%, #1A2F49 30%, #131F37 50%, #11192E 70%, #101327 100%);
 
   background-attachment: fixed;
@@ -120,8 +120,9 @@ export default {
     color: rgba(255, 255, 255, 0.55);
   }
   .logo {
-    margin-right: 10px;
-    width: 105px;
+    margin-right: 25px;
+    width:60px;
+    height:55px;
   }
   .el-checkbox__label {
     font-size: 13px;

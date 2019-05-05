@@ -8,9 +8,13 @@ exports.substring = (value, len) => {
 exports.toDeviceStatus = value => {
   switch (value) {
     case 0:
-      return '离线';
+      return '未上电';
     case 1:
       return '在线';
+    case 2:
+      return '告警';
+    default:
+      return ''
   }
 }
 

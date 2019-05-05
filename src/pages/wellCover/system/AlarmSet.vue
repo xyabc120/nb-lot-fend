@@ -29,8 +29,8 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item>
-                            <el-button type="primary">保存更新</el-button>
-                            <el-button>重置默认</el-button>
+                            <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading" :loading="fullscreenLoading" @click="saveWellCoverAlarmConfig">保存更新</el-button>
+                            <!-- <el-button @click= "" >重置默认</el-button> -->
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -45,6 +45,7 @@ export default {
     name: 'AlarmSet',
     data() {
         return {
+            fullscreenLoading: false,
             boundary: {
                 battery: '', //	电量
                 waterLevel: '', //		水位
@@ -53,6 +54,46 @@ export default {
                 signalStrength: '', //		信号强度
             }
         }
+    },
+    mounted() {
+        this.getWellCoverAlarmConfig()
+    },
+    methods: {
+        getWellCoverAlarmConfig() {
+            let api = '/config/getWellCoverAlarmConfig'
+            this.$fetch.post(api).then(res => {
+                if (res.code === 10000) {
+                    this.boundary = res.data;
+                } else {
+                    this.$message({
+                        message: res.message,
+                        type: "error"
+                    });
+                }
+            })
+        },
+        saveWellCoverAlarmConfig() {
+            this.fullscreenLoading = true
+            let api = '/config/saveWellCoverAlarmConfig'
+            this.$fetch.post(api, this.boundary).then(res => {
+                if (res.code === 10000) {
+                    this.$message({
+                        message: '保存成功！',
+                        type: "success"
+                    });
+                } else {
+                    this.$message({
+                        message: res.message,
+                        type: "error"
+                    });
+                }
+                this.fullscreenLoading = false
+            }).catch(err => {
+                this.$message.error(err.message);
+                this.fullscreenLoading = false;
+            });
+        },
+
     },
 }
 </script>
